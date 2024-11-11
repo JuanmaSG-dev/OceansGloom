@@ -6,6 +6,8 @@ public class ZonaPesca : MonoBehaviour
     public DialogueSystem dialogueSystem;
     public DecisionSystem decisionSystem;
 
+    public FishingMinigame fishingMinigame;
+
     void OnTriggerEnter2D(Collider2D other)
     {
         // Si el objeto que entra es el barco
@@ -37,11 +39,11 @@ public class ZonaPesca : MonoBehaviour
         // Si el jugador está en la zona de pesca y presiona E, ejecuta la acción de pesca
         if (shipController != null && Input.GetKeyDown(KeyCode.E))
         {
-            string[] fishingDialogue = { "You found a fishing spot!", "Press E to start fishing." };
+            string[] fishingDialogue = { "Encontráste una zona de pesca.", "¿Quieres pescar aquí?" };
             dialogueSystem.StartDialogue(fishingDialogue, () =>
             {
                 // Una vez terminado el diálogo, mostrar las opciones de decisión
-                string[] options = { "Fish", "Leave" };
+                string[] options = { "Pescar", "Irse" };
                 decisionSystem.StartDecision(options, OnDecisionMade);
             });
         }
@@ -52,6 +54,7 @@ public class ZonaPesca : MonoBehaviour
         if (choice == 0)
         {
             Debug.Log("You chose to Fish!");
+            StartFishingMinigame();
             // Lógica para iniciar la pesca
         }
         else if (choice == 1)
@@ -59,5 +62,12 @@ public class ZonaPesca : MonoBehaviour
             Debug.Log("You chose to Leave.");
             // Lógica para salir o cerrar el diálogo
         }
+    }
+
+    private void StartFishingMinigame()
+    {
+        shipController.SetControlEnabled(false);
+        fishingMinigame.gameObject.SetActive(true);
+        fishingMinigame.StartFishing();
     }
 }

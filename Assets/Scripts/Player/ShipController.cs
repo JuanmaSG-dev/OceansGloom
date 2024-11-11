@@ -12,10 +12,11 @@ public class ShipController : MonoBehaviour
     private Quaternion fixedRotation;
     public Vector3 bubbleOffset = new(0, 1f, 0);
 
-    private bool controlEnabled = true;
+    [SerializeField] bool controlEnabled = true;
 
     void Start()
     {
+        controlEnabled = true;
         rb = GetComponent<Rigidbody2D>();
         if (dialogueBubble != null)
         {
