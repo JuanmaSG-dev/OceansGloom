@@ -66,7 +66,7 @@ public class DialogueSystem : MonoBehaviour
     // Termina el diálogo
     private void EndDialogue()
     {
-        shipController.SetControlEnabled(true); // Reactiva los controles del barco
+        //shipController.SetControlEnabled(true); // Reactiva los controles del barco
         dialoguePanel.SetActive(false);  // Desactiva el panel de diálogo
 
         // Llama al callback, si lo proporcionaron
