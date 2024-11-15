@@ -8,6 +8,9 @@ public class ZonaPesca : MonoBehaviour
 
     public FishingMinigame fishingMinigame;
 
+    public delegate void FishingCompleted(GameObject zone);
+    public event FishingCompleted onFishingCompleted;  // Evento que se activa cuando se pesca en la zona
+
     void OnTriggerEnter2D(Collider2D other)
     {
         // Si el objeto que entra es el barco
@@ -37,7 +40,7 @@ public class ZonaPesca : MonoBehaviour
     void Update()
     {
         // Si el jugador está en la zona de pesca y presiona E, ejecuta la acción de pesca
-        if (shipController != null && Input.GetKeyDown(KeyCode.E))
+        if (shipController != null && Input.GetKeyDown(KeyCode.E) && !fishingMinigame.isFishingActive)
         {
             string[] fishingDialogue = { "Encontráste una zona de pesca.", "¿Quieres pescar aquí?" };
             dialogueSystem.StartDialogue(fishingDialogue, () =>
@@ -69,5 +72,10 @@ public class ZonaPesca : MonoBehaviour
         shipController.SetControlEnabled(false);
         fishingMinigame.gameObject.SetActive(true);
         fishingMinigame.StartFishing();
+    }
+
+    private void FinishFishing()
+    {
+        onFishingCompleted?.Invoke(gameObject);
     }
 }

@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections;
 
 public class FishingMinigame : MonoBehaviour
 {
@@ -11,32 +12,46 @@ public class FishingMinigame : MonoBehaviour
     public TMP_Text puntosText;              // Texto para mostrar la puntuación
     public TMP_Text livesText;               // Texto para mostrar las vidas restantes
 
-    public float hookSpeed = 200f;           // Velocidad del anzuelo
+    //public float hookSpeed = 200f;           // Velocidad del anzuelo
     public int targetPoints = 10;            // Puntos necesarios para ganar
     public int lives = 3;                    // Vidas máximas
 
     private int currentPoints = 0;           // Puntos actuales
-    private bool isFishingActive = false;    // Estado del minijuego
+    public bool isFishingActive = false;    // Estado del minijuego
     private Vector2 greenZoneDirection;      // Dirección de movimiento del área verde
-    [SerializeField] float greenZoneSpeed = 300f;      // Velocidad de la zona verde
+    [SerializeField] float greenZoneBaseSpeed = 200f;      // Velocidad de la zona verde
+    [SerializeField] float greenZoneSpeed;
 
-    private ShipController shipController;   // Control del barco (se desactivará)
+    public ShipController shipController;   // Control del barco (se desactivará)
 
-    private float hookUpperLimit;
-    private float hookLowerLimit;
+    //private float hookUpperLimit;
+    //private float hookLowerLimit;
+
+    public FishPool fishPool;
+    private Fish selectedFish;
+
+    public Image caughtFishImage;
+    private bool isShinyCaught;
+
+
 
     private void Start()
     { 
         fishingCanvas.gameObject.SetActive(true);
-        hookUpperLimit = redBar.rect.height;
-        hookLowerLimit = -redBar.rect.height;
+        caughtFishImage.gameObject.SetActive(false);
+        //hookUpperLimit = redBar.rect.height;
+        //hookLowerLimit = -redBar.rect.height;
         hook.anchoredPosition = new Vector2(hook.anchoredPosition.x, 278);
-        shipController = FindObjectOfType<ShipController>();
-        SetInteraction(false); // Inicialmente desactiva la interacción
+        shipController.SetControlEnabled(false);
     }
 
     public void StartFishing()
     {
+        selectedFish = fishPool.GetRandomFish();
+        Debug.Log($"Has enganchado un {selectedFish.fishName}");
+
+        greenZoneSpeed = greenZoneBaseSpeed * selectedFish.difficulty;
+
         isFishingActive = true;
         fishingCanvas.gameObject.SetActive(true);
 
@@ -48,6 +63,8 @@ public class FishingMinigame : MonoBehaviour
         currentPoints = 0;
         lives = 3;
 
+        UpdateUI();
+
         // Inicializa el movimiento aleatorio de la zona verde
         greenZoneDirection = Vector2.up; // Comienza moviéndose hacia arriba
     }
@@ -56,7 +73,7 @@ public class FishingMinigame : MonoBehaviour
     {
         if (!isFishingActive) return;
 
-        HandleHookMovement();
+        //HandleHookMovement();
         MoveGreenZone();
 
         if (Input.GetKeyDown(KeyCode.Space))
@@ -65,7 +82,13 @@ public class FishingMinigame : MonoBehaviour
         }
     }
 
-    private void HandleHookMovement()
+    private void UpdateUI()
+    {
+        puntosText.text = "Puntos: " + currentPoints + "/" + targetPoints;
+        livesText.text = "Vidas: " + lives;
+    }
+
+    /*private void HandleHookMovement()
     {
         float move = 0f;
 
@@ -79,7 +102,7 @@ public class FishingMinigame : MonoBehaviour
 
         // Actualiza la posición del anzuelo solo en el eje Y
         hook.anchoredPosition = new Vector2(hook.anchoredPosition.x, newYPosition);
-    }
+    }*/
 
     private void MoveGreenZone()
     {
@@ -123,26 +146,46 @@ public class FishingMinigame : MonoBehaviour
     private void EndGame(bool success)
     {
         isFishingActive = false;
-        fishingCanvas.gameObject.SetActive(false);
-
-        // Reactiva el control del barco y las interacciones
-        shipController.SetControlEnabled(true);
-        SetInteraction(true);
 
         if (success)
         {
             Debug.Log("¡Pesca exitosa!");
+
+            // Determina si el pez es shiny
+            isShinyCaught = IsShiny(selectedFish);
+            if (isShinyCaught)
+            {
+                Debug.Log("SHINYYYY");
+            }
+
+            // Asigna el sprite adecuado (shiny o normal)
+            caughtFishImage.sprite = isShinyCaught ? selectedFish.shinySprite : selectedFish.normalSprite;
+
+            // Activa la imagen del pez y la oculta después de unos segundos
+            StartCoroutine(ShowCaughtFish());
         }
         else
         {
             Debug.Log("Pesca fallida. Has perdido todas tus vidas.");
+            fishingCanvas.gameObject.SetActive(false);
+            shipController.SetControlEnabled(true);
         }
     }
 
-    private void SetInteraction(bool isEnabled)
+    // Corrutina para mostrar el sprite del pez capturado
+    private IEnumerator ShowCaughtFish()
     {
-        shipController.SetControlEnabled(isEnabled);
-        // Aquí puedes agregar cualquier otra lógica para bloquear o permitir la interacción en la zona de pesca
-        // Cambiar el estado de colisiones o bloquear botones en caso de que haya otros.
+        caughtFishImage.gameObject.SetActive(true);
+        yield return new WaitForSeconds(3f); // Muestra la imagen por 3 segundos
+        caughtFishImage.gameObject.SetActive(false);
+        fishingCanvas.gameObject.SetActive(false);
+        shipController.SetControlEnabled(true);
+    }
+
+
+    private bool IsShiny(Fish fish)
+    {
+        float chance = Random.value;
+        return chance <= fish.shinyProbability;
     }
 }

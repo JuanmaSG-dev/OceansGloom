@@ -13,6 +13,7 @@ public class ShipController : MonoBehaviour
     public Vector3 bubbleOffset = new(0, 1f, 0);
 
     [SerializeField] bool controlEnabled = true;
+    public FishingMinigame fishingMinigame;
 
     void Start()
     {
@@ -41,7 +42,7 @@ public class ShipController : MonoBehaviour
 
     void FixedUpdate()
     {
-            if (controlEnabled)
+            if (controlEnabled && !fishingMinigame.isFishingActive)
             {
                 // Control de velocidad
                 if (Input.GetKey(KeyCode.W))
@@ -58,7 +59,7 @@ public class ShipController : MonoBehaviour
                 }
             }
 
-            if (controlEnabled) { 
+            if (controlEnabled && !fishingMinigame.isFishingActive) { 
                     // Rotación del barco
                     float rotationInput = 0f;
                 if (Input.GetKey(KeyCode.A))
