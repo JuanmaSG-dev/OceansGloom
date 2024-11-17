@@ -32,6 +32,7 @@ public class FishingMinigame : MonoBehaviour
 
     public Image caughtFishImage;
     private bool isShinyCaught;
+    ZonaPesca currentFishingZone;
 
 
 
@@ -45,8 +46,9 @@ public class FishingMinigame : MonoBehaviour
         shipController.SetControlEnabled(false);
     }
 
-    public void StartFishing()
+    public void StartFishing(ZonaPesca fishingZone)
     {
+        currentFishingZone = fishingZone;
         selectedFish = fishPool.GetRandomFish();
         Debug.Log($"Has enganchado un {selectedFish.fishName}");
 
@@ -180,6 +182,8 @@ public class FishingMinigame : MonoBehaviour
         caughtFishImage.gameObject.SetActive(false);
         fishingCanvas.gameObject.SetActive(false);
         shipController.SetControlEnabled(true);
+        currentFishingZone.DeactivateZone();
+        FindObjectOfType<FishingZoneManager>().SpawnNewFishingZone();
     }
 
 

@@ -7,9 +7,11 @@ public class ZonaPesca : MonoBehaviour
     public DecisionSystem decisionSystem;
 
     public FishingMinigame fishingMinigame;
+    public Bounds Bounds => GetComponent<CircleCollider2D>().bounds;
 
     public delegate void FishingCompleted(GameObject zone);
     public event FishingCompleted onFishingCompleted;  // Evento que se activa cuando se pesca en la zona
+
 
     void OnTriggerEnter2D(Collider2D other)
     {
@@ -71,11 +73,17 @@ public class ZonaPesca : MonoBehaviour
     {
         shipController.SetControlEnabled(false);
         fishingMinigame.gameObject.SetActive(true);
-        fishingMinigame.StartFishing();
+        fishingMinigame.StartFishing(this);
     }
 
     private void FinishFishing()
     {
         onFishingCompleted?.Invoke(gameObject);
     }
+
+    public void DeactivateZone()
+    {
+        Destroy(gameObject);
+    }
+
 }
