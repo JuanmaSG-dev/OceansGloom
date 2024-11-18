@@ -8,35 +8,52 @@ public class ShipController : MonoBehaviour
     public float currentSpeed = 0f;
 
     private Rigidbody2D rb;
+    public GameObject fishingBubble;
     public GameObject dialogueBubble;
-    private Quaternion fixedRotation;
+    private Quaternion fixedRotationBubble1;
+    private Quaternion fixedRotationBubble2;
+    private Quaternion fixedRotationEye;
     public Vector3 bubbleOffset = new(0, 1f, 0);
+    public Vector3 EyeOffset = new(0, -1f, 0);
 
     [SerializeField] bool controlEnabled = true;
     public FishingMinigame fishingMinigame;
+
+    public EyeControl Eye;
+    //private bool inSharkZone = false;
 
     void Start()
     {
         controlEnabled = true;
         rb = GetComponent<Rigidbody2D>();
-        if (dialogueBubble != null)
+        if (fishingBubble != null)
         {
-            fixedRotation = dialogueBubble.transform.rotation;
-            dialogueBubble.SetActive(false);
+            fixedRotationBubble1 = fishingBubble.transform.rotation;
+            fishingBubble.SetActive(false);
+        }
+        if (Eye != null)
+        {
+            fixedRotationEye = Eye.transform.rotation;
+            Eye.SetEyeActive(false);
         }
     }
 
     public void ToggleDialogueBubble(bool show)
     {
-        dialogueBubble.SetActive(show);
+        fishingBubble.SetActive(show);
     }
 
     public void Update()
     {
-        if (dialogueBubble != null && dialogueBubble.activeSelf)
+        if (fishingBubble != null && fishingBubble.activeSelf)
         {
-            dialogueBubble.transform.position = transform.position + bubbleOffset;
-            dialogueBubble.transform.rotation = fixedRotation;
+            fishingBubble.transform.position = transform.position + bubbleOffset;
+            fishingBubble.transform.rotation = fixedRotationBubble1;
+        }
+        if (Eye != null && Eye.isActiveNow)
+        {
+            Eye.transform.position = transform.position + EyeOffset;
+            Eye.transform.rotation = fixedRotationEye;
         }
     }
 
@@ -80,5 +97,24 @@ public class ShipController : MonoBehaviour
     public void SetControlEnabled(bool enabled)
     {
         controlEnabled = enabled;
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("SharkLayer"))
+        {
+            //inSharkZone = true;
+            Eye.SetEyeActive(true);
+            Eye.SetEyeState(false);
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("SharkLayer"))
+        {
+            //inSharkZone = false;
+            Eye.SetEyeActive(false);
+        }
     }
 }

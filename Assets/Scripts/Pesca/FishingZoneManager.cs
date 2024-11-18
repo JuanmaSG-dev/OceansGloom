@@ -5,7 +5,7 @@ public class FishingZoneManager : MonoBehaviour
 {
     public GameObject fishingZonePrefab; // Prefab de la zona de pesca
     public int maxFishingZones = 25;     // Número máximo de zonas de pesca activas
-    public float minDistanceBetweenZones = 5f; // Distancia mínima entre zonas
+    public float minDistanceBetweenZones = 15f; // Distancia mínima entre zonas
     public LayerMask islandLayer;        // Capa para detectar colisiones (islas, obstáculos)
     public Vector2 mapBoundsMin;         // Límites mínimos del mapa (eje X, Y)
     public Vector2 mapBoundsMax;         // Límites máximos del mapa (eje X, Y)
