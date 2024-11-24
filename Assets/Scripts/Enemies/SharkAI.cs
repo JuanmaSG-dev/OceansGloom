@@ -1,94 +1,39 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class SharkAI : MonoBehaviour
 {
     public float moveSpeed = 5f; // Velocidad del tiburón
-    public Transform player;    // Referencia al transform del jugador
-    public float rotationSpeed = 180f; // Velocidad de rotación del tiburón (grados por segundo)
-    public float turnInterval = 2f; // Intervalo para cambiar de dirección (en segundos)
-
-    private float timeToTurn; // Temporizador para cambiar de dirección
-    public PolygonCollider2D visionCollider; // Rango de visión del tiburón
-
-    private bool isChasing = false; // El tiburón está persiguiendo al jugador
-    public EyeControl Eye;
-
-    private void Start()
-    {
-        // Inicializa el temporizador para el giro
-        timeToTurn = turnInterval;
-
-        if (Eye == null)
-        {
-            Debug.LogError("EyeControl no encontrado");
-        }
-    }
+    public Transform[] waypoints; // Ruta de waypoints
+    private int currentWaypointIndex = 0; // Índice del waypoint actual
 
     private void Update()
     {
-        if (isChasing)
+        PatrolRoute();
+    }
+
+    private void PatrolRoute()
+    {
+        if (waypoints.Length == 0) return;
+
+        // Mover hacia el waypoint actual
+        Transform targetWaypoint = waypoints[currentWaypointIndex];
+        MoveTowards(targetWaypoint.position);
+
+        // Verificar si hemos llegado al waypoint
+        if (Vector3.Distance(transform.position, targetWaypoint.position) < 0.1f)
         {
-            ChasePlayer();
-        }
-        else
-        {
-            PatrolArea();
+            currentWaypointIndex = (currentWaypointIndex + 1) % waypoints.Length; // Siguiente waypoint
         }
     }
 
-    private void PatrolArea()
+    private void MoveTowards(Vector3 targetPosition)
     {
-        // Mueve al tiburón hacia adelante en la dirección actual
-        transform.Translate(Vector3.up * moveSpeed * Time.deltaTime);
+        // Mover hacia el objetivo
+        Vector3 direction = (targetPosition - transform.position).normalized;
+        transform.position += direction * moveSpeed * Time.deltaTime;
 
-        // Reduce el temporizador de giro
-        timeToTurn -= Time.deltaTime;
-
-        // Cambia la dirección del tiburón aleatoriamente después del intervalo
-        if (timeToTurn <= 0f)
-        {
-            // Realiza una rotación aleatoria, pero más suave
-            float randomTurn = Random.Range(-90f, 90f); // Giros más controlados
-            transform.Rotate(0f, 0f, randomTurn);
-
-            // Restablece el temporizador
-            timeToTurn = turnInterval;
-        }
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            // Cuando el jugador entra en el rango de visión
-            isChasing = true; // Activa la persecución
-            Eye.SetEyeActive(true);
-            Eye.SetEyeState(true);
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            // Cuando el jugador sale del rango de visión
-            isChasing = false; // Deja de perseguir
-            Eye.SetEyeActive(false);
-        }
-    }
-
-    private void ChasePlayer()
-    {
-        // Direccion hacia el jugador
-        Vector2 direction = (player.position - transform.position).normalized;
-
-        // Mover al tiburón
-        transform.position += (Vector3)direction * moveSpeed * Time.deltaTime;
-
-        // Rotar el tiburón hacia la dirección en la que se está moviendo
+        // Rotar hacia la dirección del movimiento
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f; // Ajuste para sprites orientados hacia arriba
-        Quaternion targetRotation = Quaternion.Euler(0, 0, angle);
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        transform.rotation = Quaternion.Euler(0, 0, angle);
     }
 }

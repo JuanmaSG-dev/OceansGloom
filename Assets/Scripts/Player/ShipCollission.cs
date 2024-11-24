@@ -27,14 +27,13 @@ public class ShipCollision : MonoBehaviour
         }
     }
 
-    void DestroyBoat()
+    public void DestroyBoat()
     {
         // Crear un efecto de explosión en la posición actual del barco
         if (explosionEffectPrefab != null)
         {
             Instantiate(explosionEffectPrefab, transform.position, Quaternion.identity);
         }
-
         // Desactivar temporalmente el barco para "destruirlo"
         gameObject.SetActive(false);
 

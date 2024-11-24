@@ -19,7 +19,7 @@ public class ShipController : MonoBehaviour
     [SerializeField] bool controlEnabled = true;
     public FishingMinigame fishingMinigame;
 
-    public EyeControl Eye;
+    //public EyeControl Eye;
     //private bool inSharkZone = false;
 
     void Start()
@@ -31,11 +31,11 @@ public class ShipController : MonoBehaviour
             fixedRotationBubble1 = fishingBubble.transform.rotation;
             fishingBubble.SetActive(false);
         }
-        if (Eye != null)
+        /*if (Eye != null)
         {
             fixedRotationEye = Eye.transform.rotation;
             Eye.SetEyeActive(false);
-        }
+        }*/
     }
 
     public void ToggleDialogueBubble(bool show)
@@ -50,11 +50,11 @@ public class ShipController : MonoBehaviour
             fishingBubble.transform.position = transform.position + bubbleOffset;
             fishingBubble.transform.rotation = fixedRotationBubble1;
         }
-        if (Eye != null && Eye.isActiveNow)
+        /*if (Eye != null && Eye.isActiveNow)
         {
             Eye.transform.position = transform.position + EyeOffset;
             Eye.transform.rotation = fixedRotationEye;
-        }
+        }*/
     }
 
     void FixedUpdate()
@@ -99,7 +99,7 @@ public class ShipController : MonoBehaviour
         controlEnabled = enabled;
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    /*private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("SharkLayer"))
         {
@@ -116,5 +116,5 @@ public class ShipController : MonoBehaviour
             //inSharkZone = false;
             Eye.SetEyeActive(false);
         }
-    }
+    }*/
 }

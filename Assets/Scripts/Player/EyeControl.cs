@@ -16,6 +16,7 @@ public class EyeControl : MonoBehaviour
 
     public void SetEyeState(bool isDanger)
     {
+
         spriteRenderer.sprite = isDanger ? dangerSprite : warningSprite; // Cambia el sprite
         SetEyeActive(true); // Asegúrate de que el ojo esté visible
     }

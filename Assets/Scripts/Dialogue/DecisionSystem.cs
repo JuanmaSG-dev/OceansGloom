@@ -13,12 +13,14 @@ public class DecisionSystem : MonoBehaviour
 
     private void Start()
     {
+        
         decisionPanel.SetActive(false);  // Se asegura de que el panel esté oculto al principio
     }
 
     // Inicia el sistema de decisiones
     public void StartDecision(string[] options, Action<int> callback)
     {
+        shipController.SetControlEnabled(false);
         onDecisionMade = callback;
         decisionPanel.SetActive(true);  // Activa el panel de decisiones
 
