@@ -7,22 +7,22 @@ public class FishingMinigame : MonoBehaviour
 {
     public Canvas fishingCanvas;             // Canvas para activar o desactivar el minijuego de pesca
     public RectTransform hook;               // El anzuelo controlado por el jugador
-    public RectTransform greenZone;          // Zona verde móvil
+    public RectTransform greenZone;          // Zona verde mï¿½vil
     public RectTransform redBar;             // Barra roja de fondo
-    public TMP_Text puntosText;              // Texto para mostrar la puntuación
+    public TMP_Text puntosText;              // Texto para mostrar la puntuaciï¿½n
     public TMP_Text livesText;               // Texto para mostrar las vidas restantes
 
     //public float hookSpeed = 200f;           // Velocidad del anzuelo
     public int targetPoints = 10;            // Puntos necesarios para ganar
-    public int lives = 3;                    // Vidas máximas
+    public int lives = 3;                    // Vidas mï¿½ximas
 
     private int currentPoints = 0;           // Puntos actuales
     public bool isFishingActive = false;    // Estado del minijuego
-    private Vector2 greenZoneDirection;      // Dirección de movimiento del área verde
+    private Vector2 greenZoneDirection;      // Direcciï¿½n de movimiento del ï¿½rea verde
     [SerializeField] float greenZoneBaseSpeed = 200f;      // Velocidad de la zona verde
     [SerializeField] float greenZoneSpeed;
 
-    public ShipController shipController;   // Control del barco (se desactivará)
+    public ShipController shipController;   // Control del barco (se desactivarï¿½)
 
     //private float hookUpperLimit;
     //private float hookLowerLimit;
@@ -61,14 +61,14 @@ public class FishingMinigame : MonoBehaviour
         greenZone.gameObject.SetActive(true);
         redBar.gameObject.SetActive(true);
 
-        // Inicializa la posición y los puntos del minijuego
+        // Inicializa la posiciï¿½n y los puntos del minijuego
         currentPoints = 0;
         lives = 3;
 
         UpdateUI();
 
         // Inicializa el movimiento aleatorio de la zona verde
-        greenZoneDirection = Vector2.up; // Comienza moviéndose hacia arriba
+        greenZoneDirection = Vector2.up; // Comienza moviï¿½ndose hacia arriba
     }
 
     private void Update()
@@ -99,10 +99,10 @@ public class FishingMinigame : MonoBehaviour
         else if (Input.GetKey(KeyCode.S))
             move = -hookSpeed * Time.deltaTime;
 
-        // Calcula la nueva posición en Y y limita el movimiento dentro de los límites
+        // Calcula la nueva posiciï¿½n en Y y limita el movimiento dentro de los lï¿½mites
         float newYPosition = Mathf.Clamp(hook.anchoredPosition.y + move, hookLowerLimit, hookUpperLimit);
 
-        // Actualiza la posición del anzuelo solo en el eje Y
+        // Actualiza la posiciï¿½n del anzuelo solo en el eje Y
         hook.anchoredPosition = new Vector2(hook.anchoredPosition.x, newYPosition);
     }*/
 
@@ -110,7 +110,7 @@ public class FishingMinigame : MonoBehaviour
     {
         greenZone.anchoredPosition += greenZoneDirection * greenZoneSpeed * Time.deltaTime;
 
-        // Invierte la dirección de movimiento cuando llega a los bordes
+        // Invierte la direcciï¿½n de movimiento cuando llega a los bordes
         float minY = redBar.rect.yMin + greenZone.rect.height / 2;
         float maxY = redBar.rect.yMax - greenZone.rect.height / 2;
 
@@ -136,7 +136,7 @@ public class FishingMinigame : MonoBehaviour
         }
         else
         {
-            lives--; // Pierde una vida si está fuera de la zona verde
+            lives--; // Pierde una vida si estï¿½ fuera de la zona verde
             livesText.text = "Vidas: " + lives;
             if (lives <= 0)
             {
@@ -151,8 +151,11 @@ public class FishingMinigame : MonoBehaviour
 
         if (success)
         {
-            Debug.Log("¡Pesca exitosa!");
-
+            Debug.Log("ï¿½Pesca exitosa!");
+            if (selectedFish.isSpecial == true) {
+                Debug.Log("Has capturado un pez especial");
+                selectedFish.wasCaught = true;
+            }
             // Determina si el pez es shiny
             isShinyCaught = IsShiny(selectedFish);
             if (isShinyCaught)
@@ -163,7 +166,7 @@ public class FishingMinigame : MonoBehaviour
             // Asigna el sprite adecuado (shiny o normal)
             caughtFishImage.sprite = isShinyCaught ? selectedFish.shinySprite : selectedFish.normalSprite;
 
-            // Activa la imagen del pez y la oculta después de unos segundos
+            // Activa la imagen del pez y la oculta despuï¿½s de unos segundos
             StartCoroutine(ShowCaughtFish());
         }
         else
