@@ -5,22 +5,22 @@ using UnityEngine.SceneManagement;
 
 public class MenuScript : MonoBehaviour
 {
-    void PlayButton()
+    public void PlayButton()
     {
         SceneManager.LoadScene("Tutorial");
     }
 
-    void OpcionesButton()
+    public void OpcionesButton()
     {
         
     }
 
-    void SalirButton()
+    public void SalirButton()
     {
         Application.Quit();
     }
 
-    void VolverButton()
+    public void VolverButton()
     {
         SceneManager.LoadScene("Menu");
     }

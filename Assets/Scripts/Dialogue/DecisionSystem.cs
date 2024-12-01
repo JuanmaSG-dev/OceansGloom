@@ -7,14 +7,14 @@ public class DecisionSystem : MonoBehaviour
 {
     public GameObject decisionPanel;  // Panel de decisiones
     public Button[] optionButtons;    // Botones para las opciones
-    private Action<int> onDecisionMade;  // Acción que se ejecutará cuando se tome una decisión
+    private Action<int> onDecisionMade;  // Accion que se ejecutara cuando se tome una decision
 
     public ShipController shipController;
 
     private void Start()
     {
         
-        decisionPanel.SetActive(false);  // Se asegura de que el panel esté oculto al principio
+        decisionPanel.SetActive(false);  // Se asegura de que el panel este oculto al principio
     }
 
     // Inicia el sistema de decisiones
@@ -43,10 +43,10 @@ public class DecisionSystem : MonoBehaviour
         shipController.SetControlEnabled(false); // Desactiva el control del barco mientras se toman decisiones
     }
 
-    // Selecciona la opción elegida
+    // Selecciona la opcion elegida
     private void ChooseOption(int optionIndex)
     {
-        onDecisionMade?.Invoke(optionIndex);  // Llama al callback con la opción elegida
+        onDecisionMade?.Invoke(optionIndex);  // Llama al callback con la opcion elegida
         decisionPanel.SetActive(false);  // Desactiva el panel de decisiones
         shipController.SetControlEnabled(true);  // Reactiva el control del barco
     }

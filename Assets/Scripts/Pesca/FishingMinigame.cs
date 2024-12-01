@@ -61,7 +61,7 @@ public class FishingMinigame : MonoBehaviour
         greenZone.gameObject.SetActive(true);
         redBar.gameObject.SetActive(true);
 
-        // Inicializa la posici�n y los puntos del minijuego
+        // Inicializa la posicion y los puntos del minijuego
         currentPoints = 0;
         lives = 3;
 
@@ -151,7 +151,7 @@ public class FishingMinigame : MonoBehaviour
 
         if (success)
         {
-            Debug.Log("�Pesca exitosa!");
+            Debug.Log("¡Pesca exitosa!");
             if (selectedFish.isSpecial == true) {
                 Debug.Log("Has capturado un pez especial");
                 selectedFish.wasCaught = true;

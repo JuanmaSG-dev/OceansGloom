@@ -21,7 +21,7 @@ public class ZonaPesca : MonoBehaviour
             // Obtenemos el componente ShipController del barco
             shipController = other.GetComponent<ShipController>();
 
-            // Activamos la burbuja de diálogo si encontramos el ShipController
+            // Activamos la burbuja de dialogo si encontramos el ShipController
             if (shipController != null)
             {
                 shipController.ToggleDialogueBubble(true);
@@ -41,13 +41,13 @@ public class ZonaPesca : MonoBehaviour
 
     void Update()
     {
-        // Si el jugador está en la zona de pesca y presiona E, ejecuta la acción de pesca
+        // Si el jugador esta en la zona de pesca y presiona E, ejecuta la accion de pesca
         if (shipController != null && Input.GetKeyDown(KeyCode.E) && !fishingMinigame.isFishingActive)
         {
-            string[] fishingDialogue = { "Encontráste una zona de pesca.", "¿Quieres pescar aquí?" };
+            string[] fishingDialogue = { "EncontrÃ¡ste una zona de pesca.", "Â¿Quieres pescar aquÃ­?" };
             dialogueSystem.StartDialogue(fishingDialogue, () =>
             {
-                // Una vez terminado el diálogo, mostrar las opciones de decisión
+                // Una vez terminado el dialogo, mostrar las opciones de decision
                 string[] options = { "Pescar", "Irse" };
                 decisionSystem.StartDecision(options, OnDecisionMade);
             });
@@ -60,12 +60,12 @@ public class ZonaPesca : MonoBehaviour
         {
             Debug.Log("You chose to Fish!");
             StartFishingMinigame();
-            // Lógica para iniciar la pesca
+            // Logica para iniciar la pesca
         }
         else if (choice == 1)
         {
             Debug.Log("You chose to Leave.");
-            // Lógica para salir o cerrar el diálogo
+            // Logica para salir o cerrar el dialogo
         }
     }
 
