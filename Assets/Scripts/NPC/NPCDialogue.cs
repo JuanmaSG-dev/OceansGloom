@@ -5,7 +5,7 @@ public class NPCDialogue : MonoBehaviour
     public DialogueSystem dialogueSystem;
     public DecisionSystem decisionSystem;
     public GameObject dialogueBubble;
-    private bool isPlayerInZone = false; // Flag para verificar si el jugador est� en la zona
+    private bool isPlayerInZone = false; // Flag para verificar si el jugador está en la zona
     public Vector3 bubbleOffset = new(0, 1f, 0);
 
     public string npcID;
@@ -24,7 +24,7 @@ public class NPCDialogue : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            isPlayerInZone = true; // El jugador est� en la zona
+            isPlayerInZone = true; // El jugador está en la zona
             ToggleDialogueBubble(true);
         }
     }
@@ -33,7 +33,7 @@ public class NPCDialogue : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            isPlayerInZone = false; // El jugador sali� de la zona
+            isPlayerInZone = false; // El jugador salió de la zona
             ToggleDialogueBubble(false);
         }
     }
@@ -45,7 +45,7 @@ public class NPCDialogue : MonoBehaviour
 
     void Update()
     {
-        // S�lo iniciar el di�logo si el jugador est� en la zona
+        // S�lo iniciar el di�logo si el jugador está en la zona
         if (isPlayerInZone && Input.GetKeyDown(KeyCode.E))
         {
             switch (npcID)

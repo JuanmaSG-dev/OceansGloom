@@ -155,6 +155,16 @@ public class FishingMinigame : MonoBehaviour
             if (selectedFish.isSpecial == true) {
                 Debug.Log("Has capturado un pez especial");
                 selectedFish.wasCaught = true;
+                if (HUDManager.Instance != null)
+                {
+                    HUDManager.Instance.CollectBottle();
+                }
+            }
+            if (selectedFish.isSpecial == false) {
+                if (HUDManager.Instance != null)
+                {
+                    HUDManager.Instance.IncrementFish();
+                }
             }
             // Determina si el pez es shiny
             isShinyCaught = IsShiny(selectedFish);

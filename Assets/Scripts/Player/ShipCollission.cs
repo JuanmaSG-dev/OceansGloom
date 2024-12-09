@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class ShipCollision : MonoBehaviour
 {
-    public float criticalImpactSpeed = 8f;         // Velocidad crítica del impacto para destruir el barco
-    public Vector3 respawnPosition;                // Posición de reaparición
-    public GameObject explosionEffectPrefab;       // Prefab de explosión, si quieres un efecto visual
+    public float criticalImpactSpeed = 8f;         // Velocidad crï¿½tica del impacto para destruir el barco
+    public Vector3 respawnPosition;                // Posiciï¿½n de reapariciï¿½n
+    public GameObject explosionEffectPrefab;       // Prefab de explosiï¿½n, si quieres un efecto visual
 
     private Rigidbody2D rb;
     public ShipController shipController;
@@ -17,10 +17,10 @@ public class ShipCollision : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // Obtener la velocidad relativa del impacto en el punto de colisión
+        // Obtener la velocidad relativa del impacto en el punto de colisiï¿½n
         float impactSpeed = collision.relativeVelocity.magnitude;
 
-        // Verificar si la velocidad relativa supera la velocidad crítica
+        // Verificar si la velocidad relativa supera la velocidad crï¿½tica
         if (impactSpeed >= criticalImpactSpeed)
         {
             DestroyBoat();
@@ -29,21 +29,25 @@ public class ShipCollision : MonoBehaviour
 
     public void DestroyBoat()
     {
-        // Crear un efecto de explosión en la posición actual del barco
+        // Crear un efecto de explosiï¿½n en la posiciï¿½n actual del barco
         if (explosionEffectPrefab != null)
         {
             Instantiate(explosionEffectPrefab, transform.position, Quaternion.identity);
         }
+        if (HUDManager.Instance != null)
+        {
+            HUDManager.Instance.IncrementDeaths();
+        }
         // Desactivar temporalmente el barco para "destruirlo"
         gameObject.SetActive(false);
 
-        // Llamar a la función de reaparición después de un breve retraso
-        Invoke("Respawn", 1f); // Ajusta el tiempo de reaparición según prefieras
+        // Llamar a la funciï¿½n de reapariciï¿½n despuï¿½s de un breve retraso
+        Invoke("Respawn", 1f); // Ajusta el tiempo de reapariciï¿½n segï¿½n prefieras
     }
 
     void Respawn()
     {
-        // Colocar el barco en la posición de reaparición y reiniciar su velocidad
+        // Colocar el barco en la posiciï¿½n de reapariciï¿½n y reiniciar su velocidad
         transform.position = respawnPosition;
         shipController.currentSpeed = 0f;
 
