@@ -12,6 +12,7 @@ public class ChestInteraction : MonoBehaviour
 
     public int keyID;
     private string[] fishingDialogue;
+    public bool cofreOpen = false;
 
     private void Start()
     {
@@ -55,6 +56,7 @@ public class ChestInteraction : MonoBehaviour
                         "¡Cofre obtenido!",
                     };
                         // Lógica de recompensa
+                        cofreOpen = true;
                         Destroy(gameObject); // Elimina el cofre después de abrirlo
                         break;
                     }
@@ -109,5 +111,9 @@ public class ChestInteraction : MonoBehaviour
 
             dialogueSystem.StartDialogue(fishingDialogue, () => { });
         }
+    }
+
+    public bool CheckIfOpen() {
+        return cofreOpen;
     }
 }

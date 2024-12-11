@@ -96,9 +96,9 @@ public class HUDManager : MonoBehaviour
     {
         switch (keyNumber)
         {
-            case 1: hasKey1 = true; break;
-            case 2: hasKey2 = true; break;
-            case 3: hasKey3 = true; break;
+            case 0: hasKey1 = true; break;
+            case 1: hasKey2 = true; break;
+            case 2: hasKey3 = true; break;
         }
     }
 
