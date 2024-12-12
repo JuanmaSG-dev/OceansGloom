@@ -13,6 +13,7 @@ public class NPCDialogue : MonoBehaviour
     private string[] fishingDialogue;
     private bool warningSaid = false;
     private bool bottlemessage = false;
+    private bool leavingMessage = false;
 
     private void Start()
     {
@@ -154,6 +155,14 @@ public class NPCDialogue : MonoBehaviour
                     }
                     
                     break;
+                case "7": // Grieta
+                    fishingDialogue = new string[] {
+                        "Acércate, mortal...",
+                        "Debes avanzar...",
+                        "Hasta el final del Oeste...",
+                        "Te estaré esperando...",
+                    };
+                    break;
                 default:
                     fishingDialogue = new string[] { "Hola, soy un NPC genérico." };
                     break;
@@ -177,6 +186,14 @@ public class NPCDialogue : MonoBehaviour
                 "Confiaré en ti y te dejaré pasar, pero no hagas nada raro o me veré obligado a matarte.",
                 "No hagas que me arrepienta."
             }; 
+            dialogueSystem.StartDialogue(fishingDialogue, () => { });
+        }
+        else if (isPlayerInZone && npcID == "8" && !leavingMessage) {
+            leavingMessage = true;
+            fishingDialogue = new string[] {
+                "Estás aquí por algún motivo.",
+                "Hay algo que te impide escapar.",
+            };
             dialogueSystem.StartDialogue(fishingDialogue, () => { });
         }
     }
