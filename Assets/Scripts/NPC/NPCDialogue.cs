@@ -143,7 +143,7 @@ public class NPCDialogue : MonoBehaviour
                 };
                 break;
             case "4": // Traidor
-                if (chestInteraction.CheckIfOpen()) {
+                if (chestInteraction.CheckIfOpen(0)) {
                         fishingDialogue = new string[] {
                         "Buen trabajo, eres bueno en esto.",
                         "Lo prometido es deuda, si necesitas algo en la próxima zona, ahí estaré.",
@@ -240,10 +240,10 @@ public class NPCDialogue : MonoBehaviour
                 break;
         }
         await dialogueSystem.StartDialogue(fishingDialogue, () => {isDialogueRunning = false;});
-        if (npcID == "4" && !HUDManager.Instance.GetKeyState(0) && !isDialogueRunning) {
+        if (npcID == "4" && !HUDManager.Instance.IsKeyUsed(0) && !isDialogueRunning) {
             HUDManager.Instance.CollectKey(0);
         }
-        if (npcID == "6" && !HUDManager.Instance.GetKeyState(1) && HUDManager.Instance.hasBottle && !isDialogueRunning) {
+        if (npcID == "6" && !HUDManager.Instance.HasKey(1) && HUDManager.Instance.hasBottle && !isDialogueRunning) {
             HUDManager.Instance.CollectKey(1);
         }
         if (npcID == "9" && HUDManager.Instance.fishCount >= 10 && voidmessage && !isDialogueRunning) {

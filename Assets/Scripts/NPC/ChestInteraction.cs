@@ -1,14 +1,12 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ChestInteraction : MonoBehaviour
 {
     public DialogueSystem dialogueSystem;
-    public DecisionSystem decisionSystem;
     public GameObject dialogueBubble;
-    private bool isPlayerInZone = false; // Flag para verificar si el jugador está en la zona
-    public Vector3 bubbleOffset = new(0, 1f, 0);
+    private bool isPlayerInZone = false;
+    public Vector3 bubbleOffset = new Vector3(0, 1f, 0);
 
     public int keyID;
     private string[] fishingDialogue;
@@ -23,7 +21,7 @@ public class ChestInteraction : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            isPlayerInZone = true; // El jugador está en la zona
+            isPlayerInZone = true;
             ToggleDialogueBubble(true);
         }
     }
@@ -32,7 +30,7 @@ public class ChestInteraction : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            isPlayerInZone = false; // El jugador saliá de la zona
+            isPlayerInZone = false;
             ToggleDialogueBubble(false);
         }
     }
@@ -44,76 +42,30 @@ public class ChestInteraction : MonoBehaviour
 
     async void Update()
     {
-        // Sólo iniciar el diálogo si el jugador está en la zona
         if (isPlayerInZone && Input.GetKeyDown(KeyCode.E))
         {
-            switch (keyID)
+            // Verifica si el jugador tiene la llave
+            if (HUDManager.Instance.HasKey(keyID))
             {
-                case 0:
-                    if (HUDManager.Instance != null && HUDManager.Instance.GetKeyState(keyID)) // Verifica si la llave está activa
-                    {
-                        fishingDialogue = new string[] {
-                        "¡Cofre obtenido!",
-                    };
-                        // Lógica de recompensa
-                        cofreOpen = true;
-                        Destroy(gameObject); // Elimina el cofre después de abrirlo
-                        break;
-                    }
-                    else
-                    {
-                        fishingDialogue = new string[] {
-                        "¡Te falta una llave!",
-                    };
-                    break;
-                    }
-                    
-                case 1:
-                    if (HUDManager.Instance != null && HUDManager.Instance.GetKeyState(keyID)) // Verifica si la llave está activa
-                    {
-                        fishingDialogue = new string[] {
-                        "¡Cofre obtenido!",
-                    };
-                        
-                        // Lógica de recompensa
-                        Destroy(gameObject); // Elimina el cofre después de abrirlo
-                        break;
-                    }
-                    else
-                    {
-                        fishingDialogue = new string[] {
-                        "¡Te falta una llave!",
-                    };
-                    break;
-                    }
-                case 2:
-                    if (HUDManager.Instance != null && HUDManager.Instance.GetKeyState(keyID)) // Verifica si la llave está activa
-                    {
-                        fishingDialogue = new string[] {
-                        "¡Cofre obtenido!",
-                    };
-                        
-                        // Lógica de recompensa
-                        Destroy(gameObject); // Elimina el cofre después de abrirlo
-                        break;
-                    }
-                    else
-                    {
-                        fishingDialogue = new string[] {
-                        "¡Te falta una llave!",
-                    };
-                    break;
-                    }
-                default:
-                    fishingDialogue = new string[] { "Hola, soy un NPC genérico." };
-                    break;
+                fishingDialogue = new string[] { "¡Cofre obtenido!" };
+
+                // Marca el cofre como abierto y usa la llave
+                cofreOpen = true;
+                HUDManager.Instance.UseKey(keyID);
+
+                Destroy(gameObject);  // Elimina el cofre después de abrirlo
+            }
+            else
+            {
+                fishingDialogue = new string[] { "¡Te falta una llave!" };
             }
 
             await dialogueSystem.StartDialogue(fishingDialogue, () => { });
         }
     }
 
-    public bool CheckIfOpen() {
-        return cofreOpen;
+    public bool CheckIfOpen(int keyID)
+    {
+        return cofreOpen;  // Devuelve si el cofre está abierto
     }
 }
