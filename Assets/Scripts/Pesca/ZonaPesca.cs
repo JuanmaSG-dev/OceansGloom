@@ -39,13 +39,13 @@ public class ZonaPesca : MonoBehaviour
         }
     }
 
-    void Update()
+    async void Update()
     {
         // Si el jugador esta en la zona de pesca y presiona E, ejecuta la accion de pesca
         if (shipController != null && Input.GetKeyDown(KeyCode.E) && !fishingMinigame.isFishingActive)
         {
             string[] fishingDialogue = { "Encontráste una zona de pesca.", "¿Quieres pescar aquí?" };
-            dialogueSystem.StartDialogue(fishingDialogue, () =>
+            await dialogueSystem.StartDialogue(fishingDialogue, () =>
             {
                 // Una vez terminado el dialogo, mostrar las opciones de decision
                 string[] options = { "Pescar", "Irse" };

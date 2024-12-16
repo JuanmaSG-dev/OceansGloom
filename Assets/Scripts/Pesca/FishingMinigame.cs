@@ -145,7 +145,7 @@ public class FishingMinigame : MonoBehaviour
         }
     }
 
-    private void EndGame(bool success)
+    public void EndGame(bool success)
     {
         isFishingActive = false;
 

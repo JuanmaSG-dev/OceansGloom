@@ -1,4 +1,4 @@
-using System.Collections;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,96 +9,113 @@ public class TutorialManagement : MonoBehaviour
     public GameObject fishZone;
     private string[] fishingDialogue;
 
-    public enum TutorialState
+    private enum TutorialStep
     {
+        None,
         MovementInstructions,
-        MovementActive,
         CollisionWarning,
         FishingZoneActive,
         TutorialComplete
     }
 
-    public TutorialState currentState = TutorialState.MovementInstructions;
+    private TutorialStep currentStep = TutorialStep.None;
+    private bool isStepRunning = false;
 
-    private bool isCoroutineRunning = false; // Evita múltiples llamadas a la coroutina
-
-    // Start is called before the first frame update
     void Start()
     {
-        currentState = TutorialState.MovementInstructions;
+        currentStep = TutorialStep.MovementInstructions; // Inicia con las instrucciones de movimiento
     }
 
-    // Update is called once per frame
     void Update()
     {
-        switch (currentState)
-        {
-            case TutorialState.MovementInstructions:
-                fishingDialogue = new string[] { "Para acelerar, pulsa W, y para girar A o D. Puedes frenar con S. Pulsa Espacio para avanzar los diálogos." };
-                dialogueSystem.StartDialogue(fishingDialogue, () => { });
-                currentState = TutorialState.MovementActive;
-                break;
-
-            case TutorialState.MovementActive:
-                if (HasStartedMoving())
-                {
-                    StartCoroutine(WaitBeforeCollisionWarning());
-                }
-                break;
-
-            case TutorialState.CollisionWarning:
-                ShowFishingZone();
-                fishingDialogue = new string[] { "Acércate a la zona de pesca y presiona E para pescar." };
-                dialogueSystem.StartDialogue(fishingDialogue, () => { });
-                currentState = TutorialState.FishingZoneActive;
-                break;
-
-            case TutorialState.FishingZoneActive:
-                if (isFishingCompleted())
-                {
-                    fishingDialogue = new string[] { "¡Tutorial completado!" };
-                    dialogueSystem.StartDialogue(fishingDialogue, () => { });
-                    currentState = TutorialState.TutorialComplete;
-                    StartCoroutine(EndTutorial());
-                }
-                break;
-        }
+        RunTutorial();
     }
 
-    private bool HasStartedMoving()
+    private async void RunTutorial()
     {
-        return Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0;
+        if (isStepRunning) return; // Evita que se ejecute más de una vez el mismo paso
+
+        switch (currentStep)
+        {
+            case TutorialStep.MovementInstructions:
+                isStepRunning = true;
+
+                fishingDialogue = new string[]
+                {
+                    "Para acelerar, pulsa W, y para girar A o D. Puedes frenar con S. Pulsa Espacio para avanzar los diálogos.",
+                    "Cuidado con las paredes, si te chocas a mucha velocidad, mueres."
+                };
+
+                Debug.Log("Mostrando instrucciones de movimiento...");
+                await dialogueSystem.StartDialogue(fishingDialogue);
+                currentStep = TutorialStep.CollisionWarning;
+                isStepRunning = false;
+                break;
+
+            case TutorialStep.CollisionWarning:
+                isStepRunning = true;
+
+                fishingDialogue = new string[] { "Acércate a la zona de pesca y presiona E para pescar." };
+                ShowFishingZone();
+                Debug.Log("Mostrando advertencia de colisión...");
+                await dialogueSystem.StartDialogue(fishingDialogue);
+                currentStep = TutorialStep.FishingZoneActive;
+                isStepRunning = false;
+                break;
+
+            case TutorialStep.FishingZoneActive:
+                isStepRunning = true;
+
+                Debug.Log("Esperando a que el jugador complete la pesca...");
+                await WaitUntilFishingCompleted();
+
+                fishingDialogue = new string[] { "¡Tutorial completado!" };
+                Debug.Log("Mostrando diálogo de finalización del tutorial...");
+                await dialogueSystem.StartDialogue(fishingDialogue);
+
+                currentStep = TutorialStep.TutorialComplete;
+                isStepRunning = false;
+                break;
+
+            case TutorialStep.TutorialComplete:
+                isStepRunning = true;
+
+                Debug.Log("Finalizando tutorial...");
+                await EndTutorial();
+
+                isStepRunning = false;
+                break;
+
+            default:
+                break;
+        }
     }
 
     private void ShowFishingZone()
     {
-        fishZone.SetActive(true);
-    }
-
-    private bool isFishingCompleted()
-    {
-        return fishZone == null;
-    }
-
-    private IEnumerator EndTutorial()
-    {   
-        yield return new WaitForSeconds(5f);
-        SceneManager.LoadScene("TheWest");
-    }
-
-
-    // Coroutina para esperar 20 segundos
-    private IEnumerator WaitBeforeCollisionWarning()
-    {
-        if (!isCoroutineRunning)
+        if (fishZone != null)
         {
-            isCoroutineRunning = true;
-            yield return new WaitForSeconds(10f);
-            fishingDialogue = new string[] { "Cuidado con las paredes, si te chocas a mucha velocidad, mueres." };
-            dialogueSystem.StartDialogue(fishingDialogue, () => { });
-            yield return new WaitForSeconds(10f);
-            currentState = TutorialState.CollisionWarning;
-            isCoroutineRunning = false;
+            Debug.Log("Activando la zona de pesca...");
+            fishZone.SetActive(true);
         }
+        else
+        {
+            Debug.LogError("FishZone no está asignada o no existe.");
+        }
+    }
+
+    private async Task WaitUntilFishingCompleted()
+    {
+        while (fishZone != null) // Si la zona de pesca desaparece, significa que la pesca se completó
+        {
+            await Task.Yield();
+        }
+    }
+
+    private async Task EndTutorial()
+    {
+        Debug.Log("Esperando 5 segundos antes de cargar el siguiente nivel...");
+        await Task.Delay(5000);
+        SceneManager.LoadScene("TheWest");
     }
 }

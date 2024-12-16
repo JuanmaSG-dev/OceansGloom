@@ -42,7 +42,7 @@ public class ChestInteraction : MonoBehaviour
         dialogueBubble.SetActive(show);
     }
 
-    void Update()
+    async void Update()
     {
         // Sólo iniciar el diálogo si el jugador está en la zona
         if (isPlayerInZone && Input.GetKeyDown(KeyCode.E))
@@ -109,7 +109,7 @@ public class ChestInteraction : MonoBehaviour
                     break;
             }
 
-            dialogueSystem.StartDialogue(fishingDialogue, () => { });
+            await dialogueSystem.StartDialogue(fishingDialogue, () => { });
         }
     }
 

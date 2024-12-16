@@ -1,10 +1,11 @@
 using UnityEngine;
 using TMPro;
 using System;
+using System.Threading.Tasks;  // Necesario para trabajar con Task
 
 public class DialogueSystem : MonoBehaviour
 {
-    // Panel de Di·logo
+    // Panel de Di√°logo
     public GameObject dialoguePanel;
     public TMP_Text dialogueText;
     private string[] dialogueLines;
@@ -12,15 +13,15 @@ public class DialogueSystem : MonoBehaviour
 
     public ShipController shipController;
 
-    private Action onFinishCallback;  // Para el callback de terminar el di·logo
+    private Action onFinishCallback;  // Para el callback de terminar el di√°logo
 
     private void Start()
     {
-        dialoguePanel.SetActive(false); // Se asegura de que el panel estÈ oculto al principio.
+        dialoguePanel.SetActive(false); // Se asegura de que el panel est√© oculto al principio.
     }
 
-    // Inicia el di·logo
-    public void StartDialogue(string[] lines, Action onFinish = null)
+    // Inicia el di√°logo y retorna un Task para esperar a que termine
+    public async Task StartDialogue(string[] lines, Action onFinish = null)
     {
         dialogueLines = lines;
         currentLine = 0;
@@ -30,46 +31,62 @@ public class DialogueSystem : MonoBehaviour
         shipController.SetControlEnabled(false); // Desactiva los controles del barco
         shipController.currentSpeed = 0; // Detiene el movimiento del barco
 
-        onFinishCallback = onFinish;  // Guarda el callback para cuando se termine el di·logo
+        onFinishCallback = onFinish;  // Guarda el callback para cuando se termine el di√°logo
+
+        // Espera hasta que el jugador termine de ver el di√°logo
+        await WaitForDialogueToFinish();
     }
 
-    // Este mÈtodo ser· llamado en cada frame
+    // Este m√©todo ser√° llamado en cada frame
     private void Update()
     {
-        // Si el panel de di·logo est· activo y el jugador presiona "Espacio", avanza
+        // Si el panel de di√°logo est√° activo y el jugador presiona "Espacio", avanza
         if (dialoguePanel.activeSelf && Input.GetKeyDown(KeyCode.Space))
         {
-            NextLine();  // Avanza a la siguiente lÌnea de di·logo
+            NextLine();  // Avanza a la siguiente l√≠nea de di√°logo
         }
     }
 
-    // Muestra la lÌnea de di·logo actual
+    // Muestra la l√≠nea de di√°logo actual
     private void ShowLine()
     {
         dialogueText.text = dialogueLines[currentLine];
     }
 
-    // Avanza a la siguiente lÌnea o cierra el di·logo si ha terminado
+    // Avanza a la siguiente l√≠nea o cierra el di√°logo si ha terminado
     private void NextLine()
     {
         currentLine++;
         if (currentLine < dialogueLines.Length)
         {
-            ShowLine();  // Muestra la siguiente lÌnea
+            ShowLine();  // Muestra la siguiente l√≠nea
         }
         else
         {
-            EndDialogue();  // Si no hay m·s lÌneas, termina el di·logo
+            EndDialogue();  // Si no hay m√°s l√≠neas, termina el di√°logo
         }
     }
 
-    // Termina el di·logo
+    // Termina el di√°logo
     private void EndDialogue()
     {
         shipController.SetControlEnabled(true); // Reactiva los controles del barco
-        dialoguePanel.SetActive(false);  // Desactiva el panel de di·logo
+        dialoguePanel.SetActive(false);  // Desactiva el panel de di√°logo
 
         // Llama al callback, si lo proporcionaron
+        onFinishCallback?.Invoke();
+    }
+
+    // M√©todo para esperar a que el di√°logo termine
+    private async Task WaitForDialogueToFinish()
+    {
+        // Espera hasta que el di√°logo haya terminado
+        while (currentLine < dialogueLines.Length)
+        {
+            await Task.Yield();  // Espera hasta el siguiente frame
+        }
+
+        // Al finalizar, invoca el callback si se proporcion√≥ uno
         onFinishCallback?.Invoke();
     }
 }

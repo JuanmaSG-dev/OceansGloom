@@ -446,7 +446,6 @@ MonoBehaviour:
   player: {fileID: 1799290942}
   dialogueSystem: {fileID: 843930226}
   fishZone: {fileID: 624082533}
-  currentState: 0
 --- !u!1 &139506774
 GameObject:
   m_ObjectHideFlags: 0
@@ -13265,8 +13264,10 @@ MonoBehaviour:
   target: {fileID: 1799290949}
   followSpeed: 2
   offset: {x: 0, y: 0, z: -10}
-  minBounds: {x: -15, y: 5}
-  maxBounds: {x: 15, y: -5}
+  minX: -13
+  maxX: 13
+  minY: -11
+  maxY: 11
 --- !u!1 &409030620
 GameObject:
   m_ObjectHideFlags: 0
@@ -24178,6 +24179,7 @@ MonoBehaviour:
   respawnPosition: {x: 0, y: 0, z: 0}
   explosionEffectPrefab: {fileID: 6186243396150955684, guid: 3e901dd3138be2b4d9199d6eedc819ac, type: 3}
   shipController: {fileID: 1799290945}
+  fishingMinigame: {fileID: 1855235194}
 --- !u!114 &1799290945
 MonoBehaviour:
   m_ObjectHideFlags: 0

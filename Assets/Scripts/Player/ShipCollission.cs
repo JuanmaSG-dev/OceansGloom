@@ -8,6 +8,7 @@ public class ShipCollision : MonoBehaviour
 
     private Rigidbody2D rb;
     public ShipController shipController;
+    public FishingMinigame fishingMinigame;
 
     private void Start()
     {
@@ -17,10 +18,10 @@ public class ShipCollision : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // Obtener la velocidad relativa del impacto en el punto de colisi�n
+        // Obtener la velocidad relativa del impacto en el punto de colision
         float impactSpeed = collision.relativeVelocity.magnitude;
 
-        // Verificar si la velocidad relativa supera la velocidad cr�tica
+        // Verificar si la velocidad relativa supera la velocidad critica
         if (impactSpeed >= criticalImpactSpeed)
         {
             DestroyBoat();
@@ -29,7 +30,8 @@ public class ShipCollision : MonoBehaviour
 
     public void DestroyBoat()
     {
-        // Crear un efecto de explosi�n en la posici�n actual del barco
+        fishingMinigame.EndGame(false);
+        // Crear un efecto de explosion en la posicion actual del barco
         if (explosionEffectPrefab != null)
         {
             Instantiate(explosionEffectPrefab, transform.position, Quaternion.identity);
