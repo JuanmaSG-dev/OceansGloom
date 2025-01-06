@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class MenuScript : MonoBehaviour
 {
+    public OptionsMenu optionsMenu;
+
     public void PlayButton()
     {
         SceneManager.LoadScene("Tutorial");
@@ -12,7 +14,7 @@ public class MenuScript : MonoBehaviour
 
     public void OpcionesButton()
     {
-        
+        optionsMenu.ToggleOptionsMenu();
     }
 
     public void SalirButton()

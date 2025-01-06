@@ -65,7 +65,6 @@ public class HUDManager : MonoBehaviour
     {
         float playerSpeed = playerRigidbody.velocity.magnitude;
         hudCanvas.enabled = playerSpeed <= maxSpeedForHUD;
-
         UpdateHUD();
     }
 
