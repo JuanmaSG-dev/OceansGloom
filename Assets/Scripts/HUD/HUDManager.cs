@@ -43,6 +43,7 @@ public class HUDManager : MonoBehaviour
 
     public Canvas hudCanvas;
     public ChestInteraction[] allChests;
+    int currentLanguage;
 
     private void Awake()
     {
@@ -58,7 +59,12 @@ public class HUDManager : MonoBehaviour
     }
 
     void Start() {
+        currentLanguage = PlayerPrefs.GetInt("Language", 0); // 0 = Español, 1 = Inglés
         allChests = FindObjectsOfType<ChestInteraction>();
+        if (currentLanguage == 0) // Español
+        UpdateLocationName("El Oeste");
+        else 
+        UpdateLocationName("The West");
     }
 
     void Update()

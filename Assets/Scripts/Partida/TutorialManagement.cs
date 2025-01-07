@@ -20,10 +20,12 @@ public class TutorialManagement : MonoBehaviour
 
     private TutorialStep currentStep = TutorialStep.None;
     private bool isStepRunning = false;
+    int currentLanguage;
 
     void Start()
     {
         currentStep = TutorialStep.MovementInstructions; // Inicia con las instrucciones de movimiento
+        currentLanguage = PlayerPrefs.GetInt("Language", 0); // 0 = Español, 1 = Inglés
     }
 
     void Update()
@@ -40,11 +42,23 @@ public class TutorialManagement : MonoBehaviour
             case TutorialStep.MovementInstructions:
                 isStepRunning = true;
 
-                fishingDialogue = new string[]
+                if (currentLanguage == 0) // Español
                 {
-                    "Para acelerar, pulsa W, y para girar A o D. Puedes frenar con S. Pulsa Espacio para avanzar los diálogos.",
-                    "Cuidado con las paredes, si te chocas a mucha velocidad, mueres."
-                };
+                    fishingDialogue = new string[]
+                    {
+                        "Para acelerar, pulsa W, y para girar A o D. Puedes frenar con S. Pulsa Espacio para avanzar los diálogos.",
+                        "Cuidado con las paredes, si te chocas a mucha velocidad, mueres."
+                    };
+                }
+                else // Inglés
+                {
+                    fishingDialogue = new string[]
+                    {
+                        "To accelerate, press W, and to turn A or D. You can slow down with S. Press Space to advance dialogues.",
+                        "Careful with the walls, if you crash at high speed, you die."
+                    };
+                }
+                
 
                 Debug.Log("Mostrando instrucciones de movimiento...");
                 await dialogueSystem.StartDialogue(fishingDialogue);
@@ -54,8 +68,14 @@ public class TutorialManagement : MonoBehaviour
 
             case TutorialStep.CollisionWarning:
                 isStepRunning = true;
-
-                fishingDialogue = new string[] { "Acércate a la zona de pesca y presiona E para pescar." };
+                if (currentLanguage == 0) // Español
+                {
+                    fishingDialogue = new string[] { "Acércate a la zona de pesca y presiona E para pescar." };
+                }
+                else // Inglés
+                {
+                    fishingDialogue = new string[] { "Get close to the fishing zone and press E to fish." };
+                }
                 ShowFishingZone();
                 Debug.Log("Mostrando advertencia de colisión...");
                 await dialogueSystem.StartDialogue(fishingDialogue);
@@ -68,8 +88,15 @@ public class TutorialManagement : MonoBehaviour
 
                 Debug.Log("Esperando a que el jugador complete la pesca...");
                 await WaitUntilFishingCompleted();
-
-                fishingDialogue = new string[] { "¡Tutorial completado!" };
+                if (currentLanguage == 0) // Español
+                {
+                    fishingDialogue = new string[] { "¡Tutorial completado!" };
+                }
+                else // Inglés
+                {
+                    fishingDialogue = new string[] { "Tutorial completed!" };
+                }
+                
                 Debug.Log("Mostrando diálogo de finalización del tutorial...");
                 await dialogueSystem.StartDialogue(fishingDialogue);
 
