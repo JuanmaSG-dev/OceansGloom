@@ -11,7 +11,13 @@ public class ZonaPesca : MonoBehaviour
 
     public delegate void FishingCompleted(GameObject zone);
     public event FishingCompleted onFishingCompleted;  // Evento que se activa cuando se pesca en la zona
+    int currentLanguage;
+    private string[] fishingDialogue;
 
+    private void Start()
+    {
+        currentLanguage = PlayerPrefs.GetInt("Language", 0); // 0 = Español, 1 = Inglés
+    }
 
     void OnTriggerEnter2D(Collider2D other)
     {
@@ -44,12 +50,29 @@ public class ZonaPesca : MonoBehaviour
         // Si el jugador esta en la zona de pesca y presiona E, ejecuta la accion de pesca
         if (shipController != null && Input.GetKeyDown(KeyCode.E) && !fishingMinigame.isFishingActive)
         {
-            string[] fishingDialogue = { "Encontráste una zona de pesca.", "¿Quieres pescar aquí?" };
+            if (currentLanguage == 0) // Español
+                {
+                    fishingDialogue = new string[] { "Encontráste una zona de pesca.", "¿Quieres pescar aquí?" };
+                }
+                else // Inglés
+                {
+                    fishingDialogue = new string[] { "You found a fishing zone.", "Do you want to fish here?" };
+                }
+            
             await dialogueSystem.StartDialogue(fishingDialogue, () =>
             {
                 // Una vez terminado el dialogo, mostrar las opciones de decision
-                string[] options = { "Pescar", "Irse" };
-                decisionSystem.StartDecision(options, OnDecisionMade);
+                if (currentLanguage == 0) // Español
+                {
+                    string[] options = { "Pescar", "Irse" };
+                    decisionSystem.StartDecision(options, OnDecisionMade);
+                }
+                else // Inglés
+                {
+                    string[] options = { "Fish", "Leave" };
+                    decisionSystem.StartDecision(options, OnDecisionMade);
+                }
+                
             });
         }
     }

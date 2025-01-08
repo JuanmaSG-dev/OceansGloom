@@ -34,7 +34,7 @@ public class FishingMinigame : MonoBehaviour
     private bool isShinyCaught;
     ZonaPesca currentFishingZone;
 
-
+    int currentLanguage;
 
     private void Start()
     { 
@@ -44,6 +44,8 @@ public class FishingMinigame : MonoBehaviour
         //hookLowerLimit = -redBar.rect.height;
         hook.anchoredPosition = new Vector2(hook.anchoredPosition.x, 278);
         shipController.SetControlEnabled(false);
+        currentLanguage = PlayerPrefs.GetInt("Language", 0); // 0 = Español, 1 = Inglés
+        UpdateUI();
     }
 
     public void StartFishing(ZonaPesca fishingZone)
@@ -86,8 +88,15 @@ public class FishingMinigame : MonoBehaviour
 
     private void UpdateUI()
     {
-        puntosText.text = "Puntos: " + currentPoints + "/" + targetPoints;
-        livesText.text = "Vidas: " + lives;
+        if (currentLanguage == 0) // Español
+        {
+            puntosText.text = "Puntos: " + currentPoints + "/" + targetPoints;
+            livesText.text = "Vidas: " + lives;
+        } else {
+            puntosText.text = "Points: " + currentPoints + "/" + targetPoints;
+            livesText.text = "Lives: " + lives;
+        }
+        
     }
 
     /*private void HandleHookMovement()
@@ -125,8 +134,12 @@ public class FishingMinigame : MonoBehaviour
         if (RectTransformUtility.RectangleContainsScreenPoint(greenZone, hook.position))
         {
             currentPoints++; // Solo suma puntos en zona verde
-            puntosText.text = "Puntos: " + currentPoints + "/" + targetPoints;
-            
+            if (currentLanguage == 0) // Español
+            {
+                puntosText.text = "Puntos: " + currentPoints + "/" + targetPoints;
+            } else {
+                puntosText.text = "Points: " + currentPoints + "/" + targetPoints;
+            }
 
             // Comprueba la victoria
             if (currentPoints >= targetPoints)
@@ -137,7 +150,12 @@ public class FishingMinigame : MonoBehaviour
         else
         {
             lives--; // Pierde una vida si est� fuera de la zona verde
-            livesText.text = "Vidas: " + lives;
+            if (currentLanguage == 0) // Español
+            {
+                livesText.text = "Vidas: " + lives;
+            } else {
+                livesText.text = "Lives: " + lives;
+            }
             if (lives <= 0)
             {
                 EndGame(false);
