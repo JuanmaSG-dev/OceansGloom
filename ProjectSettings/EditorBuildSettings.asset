@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/TheWest.unity
     guid: 3ec80f4ed662c6940aad3735f2ab91c0
+  - enabled: 1
+    path: Assets/Scenes/BoneyWaters.unity
+    guid: 2900c71bc7fe286458407ac328db161e
   m_configObjects: {}

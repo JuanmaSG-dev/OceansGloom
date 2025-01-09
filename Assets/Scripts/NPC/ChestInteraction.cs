@@ -11,9 +11,11 @@ public class ChestInteraction : MonoBehaviour
     public int keyID;
     private string[] fishingDialogue;
     public bool cofreOpen = false;
+    int currentLanguage;
 
     private void Start()
     {
+        currentLanguage = PlayerPrefs.GetInt("Language", 0); // 0 = Español, 1 = Inglés
         ToggleDialogueBubble(false);
     }
 
@@ -47,7 +49,14 @@ public class ChestInteraction : MonoBehaviour
             // Verifica si el jugador tiene la llave
             if (HUDManager.Instance.HasKey(keyID))
             {
-                fishingDialogue = new string[] { "¡Cofre obtenido!" };
+                if (currentLanguage == 0) // Español
+                {
+                    fishingDialogue = new string[] { "¡Cofre obtenido!" };
+                }
+                else // Inglés
+                {
+                    fishingDialogue = new string[] { "Chest obtained!" };
+                }
 
                 // Marca el cofre como abierto y usa la llave
                 cofreOpen = true;
@@ -57,7 +66,15 @@ public class ChestInteraction : MonoBehaviour
             }
             else
             {
-                fishingDialogue = new string[] { "¡Te falta una llave!" };
+                if (currentLanguage == 0) // Español
+                {
+                    fishingDialogue = new string[] { "¡Te falta una llave!" };
+                }
+                else // Inglés
+                {
+                    fishingDialogue = new string[] { "You're missing a key!" };
+                }
+                
             }
 
             await dialogueSystem.StartDialogue(fishingDialogue, () => { });
