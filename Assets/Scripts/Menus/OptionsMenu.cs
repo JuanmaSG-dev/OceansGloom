@@ -114,6 +114,26 @@ public class OptionsMenu : MonoBehaviour
                         if (HUDManager.Instance != null)
                         HUDManager.Instance.UpdateLocationName("El Oeste");
                         break;
+                    case "PauseText":
+                        text.text = "Juego pausado";
+                        if (PauseMenu.Instance != null)
+                            PauseMenu.Instance.UpdatePauseText("Juego pausado");
+                        break;
+                    case "ContinueText":
+                        text.text = "Continuar";
+                        if (PauseMenu.Instance != null)
+                            PauseMenu.Instance.UpdateContinueText("Continuar");
+                        break;
+                    case "OptionsPauseText":
+                        text.text = "Opciones";
+                        if (PauseMenu.Instance != null)
+                            PauseMenu.Instance.UpdateOptionText("Opciones");
+                        break;
+                    case "SalirMenuText":
+                        text.text = "Salir al menú";
+                        if (PauseMenu.Instance != null)
+                            PauseMenu.Instance.UpdateSalirText("Salir al menú");
+                        break;
                 }
             }
             else // Inglés
@@ -145,6 +165,26 @@ public class OptionsMenu : MonoBehaviour
                         text.text = "The West";
                         if (HUDManager.Instance != null)
                         HUDManager.Instance.UpdateLocationName("The West");
+                        break;
+                    case "PauseText":
+                        text.text = "Game paused";
+                        if (PauseMenu.Instance != null)
+                        PauseMenu.Instance.UpdatePauseText("Game paused");
+                        break;
+                    case "ContinueText":
+                        text.text = "Continue";
+                        if (PauseMenu.Instance != null)
+                            PauseMenu.Instance.UpdateContinueText("Continue");
+                        break;
+                    case "OptionsPauseText":
+                        text.text = "Options";
+                        if (PauseMenu.Instance != null)
+                            PauseMenu.Instance.UpdateContinueText("Options");
+                        break;
+                    case "SalirMenuText":
+                        text.text = "Back to Main Menu";
+                        if (PauseMenu.Instance != null)
+                            PauseMenu.Instance.UpdateContinueText("Back to Main Menu");
                         break;
                 }
             }
