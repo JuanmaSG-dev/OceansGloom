@@ -9,6 +9,7 @@ public class OptionsMenu : MonoBehaviour
     public Dropdown languageDropdown;
     public Slider musicVolumeSlider;
     public Slider soundVolumeSlider;
+    private PauseMenu pauseMenu;
 
 
     private void Awake()
@@ -27,6 +28,7 @@ public class OptionsMenu : MonoBehaviour
     {
         // Cargar configuración guardada
         LoadSettings();
+        pauseMenu = FindObjectOfType<PauseMenu>();
 
         // Asignar eventos
         languageDropdown.onValueChanged.AddListener(ChangeLanguage);
@@ -116,23 +118,23 @@ public class OptionsMenu : MonoBehaviour
                         break;
                     case "PauseText":
                         text.text = "Juego pausado";
-                        if (PauseMenu.Instance != null)
-                            PauseMenu.Instance.UpdatePauseText("Juego pausado");
+                        if (pauseMenu != null)
+                            pauseMenu.UpdatePauseText("Juego pausado");
                         break;
                     case "ContinueText":
                         text.text = "Continuar";
-                        if (PauseMenu.Instance != null)
-                            PauseMenu.Instance.UpdateContinueText("Continuar");
+                        if (pauseMenu != null)
+                            pauseMenu.UpdateContinueText("Continuar");
                         break;
                     case "OptionsPauseText":
                         text.text = "Opciones";
-                        if (PauseMenu.Instance != null)
-                            PauseMenu.Instance.UpdateOptionText("Opciones");
+                        if (pauseMenu != null)
+                            pauseMenu.UpdateOptionText("Opciones");
                         break;
                     case "SalirMenuText":
                         text.text = "Salir al menú";
-                        if (PauseMenu.Instance != null)
-                            PauseMenu.Instance.UpdateSalirText("Salir al menú");
+                        if (pauseMenu != null)
+                            pauseMenu.UpdateSalirText("Salir al menú");
                         break;
                 }
             }
@@ -167,24 +169,24 @@ public class OptionsMenu : MonoBehaviour
                         HUDManager.Instance.UpdateLocationName("The West");
                         break;
                     case "PauseText":
-                        text.text = "Game paused";
-                        if (PauseMenu.Instance != null)
-                        PauseMenu.Instance.UpdatePauseText("Game paused");
+                        text.text = "Game Paused";
+                        if (pauseMenu != null)
+                            pauseMenu.UpdatePauseText("Game Paused");
                         break;
                     case "ContinueText":
                         text.text = "Continue";
-                        if (PauseMenu.Instance != null)
-                            PauseMenu.Instance.UpdateContinueText("Continue");
+                        if (pauseMenu != null)
+                            pauseMenu.UpdateContinueText("Continue");
                         break;
                     case "OptionsPauseText":
                         text.text = "Options";
-                        if (PauseMenu.Instance != null)
-                            PauseMenu.Instance.UpdateContinueText("Options");
+                        if (pauseMenu != null)
+                            pauseMenu.UpdateOptionText("Options");
                         break;
                     case "SalirMenuText":
-                        text.text = "Back to Main Menu";
-                        if (PauseMenu.Instance != null)
-                            PauseMenu.Instance.UpdateContinueText("Back to Main Menu");
+                        text.text = "Back to main menu";
+                        if (pauseMenu != null)
+                            pauseMenu.UpdateSalirText("Back to main menu");
                         break;
                 }
             }

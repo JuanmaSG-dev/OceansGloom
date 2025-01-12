@@ -2,13 +2,14 @@ using UnityEngine;
 
 public class ShipCollision : MonoBehaviour
 {
-    public float criticalImpactSpeed = 8f;         // Velocidad cr�tica del impacto para destruir el barco
-    public Vector3 respawnPosition;                // Posici�n de reaparici�n
-    public GameObject explosionEffectPrefab;       // Prefab de explosi�n, si quieres un efecto visual
+    public float criticalImpactSpeed = 8f;         // Velocidad crítica del impacto para destruir el barco
+    public Vector3 respawnPosition;                // Posición de reaparición
+    public GameObject explosionEffectPrefab;       // Prefab de explosión, si quieres un efecto visual
 
     private Rigidbody2D rb;
     public ShipController shipController;
     public FishingMinigame fishingMinigame;
+    public WallofVoid wall;
 
     private void Start()
     {
@@ -40,16 +41,20 @@ public class ShipCollision : MonoBehaviour
         {
             HUDManager.Instance.IncrementDeaths();
         }
+        if (wall != null)
+        {
+            wall.ResetPosition();
+        }
         // Desactivar temporalmente el barco para "destruirlo"
         gameObject.SetActive(false);
 
-        // Llamar a la funci�n de reaparici�n despu�s de un breve retraso
-        Invoke("Respawn", 1f); // Ajusta el tiempo de reaparici�n seg�n prefieras
+        // Llamar a la funcion de reaparicion despues de un breve retraso
+        Invoke("Respawn", 1f); // Ajusta el tiempo de reaparicion
     }
 
     void Respawn()
     {
-        // Colocar el barco en la posici�n de reaparici�n y reiniciar su velocidad
+        // Colocar el barco en la posicion de reaparicion y reiniciar su velocidad
         transform.position = respawnPosition;
         shipController.currentSpeed = 0f;
 

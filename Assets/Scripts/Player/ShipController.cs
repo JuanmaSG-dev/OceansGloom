@@ -50,6 +50,10 @@ public class ShipController : MonoBehaviour
             fishingBubble.transform.position = transform.position + bubbleOffset;
             fishingBubble.transform.rotation = fixedRotationBubble1;
         }
+        if (HUDManager.Instance != null && HUDManager.Instance.isKey1Used)
+            maxSpeed = 15f;
+        else
+            maxSpeed = 10f;
         /*if (Eye != null && Eye.isActiveNow)
         {
             Eye.transform.position = transform.position + EyeOffset;
@@ -77,7 +81,7 @@ public class ShipController : MonoBehaviour
             }
 
             if (controlEnabled && !fishingMinigame.isFishingActive) { 
-                    // Rotación del barco
+                    // Rotaciï¿½n del barco
                     float rotationInput = 0f;
                 if (Input.GetKey(KeyCode.A))
                 {

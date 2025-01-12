@@ -7,22 +7,25 @@ public class FishingMinigame : MonoBehaviour
 {
     public Canvas fishingCanvas;             // Canvas para activar o desactivar el minijuego de pesca
     public RectTransform hook;               // El anzuelo controlado por el jugador
-    public RectTransform greenZone;          // Zona verde m�vil
+    public Image hookImage;
+    public Sprite hookDefaultImage;
+    public Sprite hookUpgradeImage;
+    public RectTransform greenZone;          // Zona verde movil
     public RectTransform redBar;             // Barra roja de fondo
-    public TMP_Text puntosText;              // Texto para mostrar la puntuaci�n
+    public TMP_Text puntosText;              // Texto para mostrar la puntuacion
     public TMP_Text livesText;               // Texto para mostrar las vidas restantes
 
     //public float hookSpeed = 200f;           // Velocidad del anzuelo
     public int targetPoints = 10;            // Puntos necesarios para ganar
-    public int lives = 3;                    // Vidas m�ximas
+    public int lives = 3;                    // Vidas maximas
 
     private int currentPoints = 0;           // Puntos actuales
     public bool isFishingActive = false;    // Estado del minijuego
-    private Vector2 greenZoneDirection;      // Direcci�n de movimiento del �rea verde
+    private Vector2 greenZoneDirection;      // Direccion de movimiento del area verde
     [SerializeField] float greenZoneBaseSpeed = 200f;      // Velocidad de la zona verde
     [SerializeField] float greenZoneSpeed;
 
-    public ShipController shipController;   // Control del barco (se desactivar�)
+    public ShipController shipController;   // Control del barco (se desactivara)
 
     //private float hookUpperLimit;
     //private float hookLowerLimit;
@@ -35,6 +38,7 @@ public class FishingMinigame : MonoBehaviour
     ZonaPesca currentFishingZone;
 
     int currentLanguage;
+    public bool Upgraded = false;
 
     private void Start()
     { 
@@ -65,16 +69,25 @@ public class FishingMinigame : MonoBehaviour
 
         // Inicializa la posicion y los puntos del minijuego
         currentPoints = 0;
-        lives = 3;
 
         UpdateUI();
 
         // Inicializa el movimiento aleatorio de la zona verde
-        greenZoneDirection = Vector2.up; // Comienza movi�ndose hacia arriba
+        greenZoneDirection = Vector2.up; // Comienza moviendose hacia arriba
     }
 
     private void Update()
     {
+        if (HUDManager.Instance != null && HUDManager.Instance.isKey3Used)
+        {
+            Upgraded = true;
+        }
+
+
+        if (Upgraded)
+        hookImage.sprite = hookUpgradeImage;
+        else
+        hookImage.sprite = hookDefaultImage;
         if (!isFishingActive) return;
 
         //HandleHookMovement();
@@ -133,7 +146,10 @@ public class FishingMinigame : MonoBehaviour
     {
         if (RectTransformUtility.RectangleContainsScreenPoint(greenZone, hook.position))
         {
-            currentPoints++; // Solo suma puntos en zona verde
+            if (Upgraded)
+                currentPoints += 2;
+            else 
+                currentPoints++; // Solo suma puntos en zona verde
             if (currentLanguage == 0) // Español
             {
                 puntosText.text = "Puntos: " + currentPoints + "/" + targetPoints;
@@ -220,6 +236,8 @@ public class FishingMinigame : MonoBehaviour
 
     private bool IsShiny(Fish fish)
     {
+        if (HUDManager.Instance != null && HUDManager.Instance.isKey2Used)
+            fish.shinyProbability = fish.shinyProbability * 1.5f;
         float chance = Random.value;
         return chance <= fish.shinyProbability;
     }

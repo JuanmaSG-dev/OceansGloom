@@ -17,9 +17,12 @@ public class NPCDialogue : MonoBehaviour
     private bool bottlemessage = false;
     private bool leavingMessage = false;
     private bool voidmessage = false;
+    private bool voidmessage2 = false;
     private Rigidbody2D playerRb;
     private bool isDialogueRunning = false;
     int currentLanguage;
+
+    private bool voidmessage3 = false;
 
     private void Start()
     {
@@ -41,6 +44,20 @@ public class NPCDialogue : MonoBehaviour
         else
         {
             Debug.LogError("No se encontró el GameObject 'Barco'.");
+        }
+        if (npcID == "19" && HUDManager.Instance.isKey2Used)
+        {
+            this.gameObject.SetActive(true);
+        } else if (npcID == "19" && !HUDManager.Instance.isKey2Used)
+        {
+            this.gameObject.SetActive(false);
+        }
+        if (npcID == "20" && HUDManager.Instance.isKey1Used)
+        {
+            this.gameObject.SetActive(true);
+        } else if (npcID == "20" && !HUDManager.Instance.isKey1Used)
+        {
+            this.gameObject.SetActive(false);
         }
     }
 
@@ -96,6 +113,50 @@ public class NPCDialogue : MonoBehaviour
 
                 await dialogueSystem.StartDialogue(fishingDialogue, () => { leavingMessage = false; });
                 playerRb.transform.position = new Vector2(playerRb.transform.position.x - 0.5f, playerRb.transform.position.y);
+            }
+            if (isPlayerInZone && npcID == "21" && !voidmessage3)
+            {
+                voidmessage3 = true;
+                if (currentLanguage == 0) // Español
+                {
+                    fishingDialogue = new string[] {
+                        "Buen trabajo superando al Muro del Vacío",
+                        "Hmm, ¿por qué me miras así?",
+                        "Veo que sospechas de mi, ¿verdad?",
+                        "Tienes tus motivos, pero yo tengo los míos.",
+                        "Necesitaba a alguien para lograr este objetivo.",
+                        "Yo fui quien te incitó a venir al Oeste.",
+                        "Y yo te impedía huir.",
+                        "El Muro del Vacío lo invoqué yo también.",
+                        "Necesitaba saber que eras el elegido.",
+                        "Y ahora estoy en lo cierto, eres al que estaba esperando.",
+                        "Hazme un último favor, y pesca mi cuerpo.",
+                        "Yo fallecí hace mucho tiempo, en estos mares.",
+                        "Mi muerte provocó que el Vacío naciese.",
+                        "Solo tú puedes acabar con él.",
+                    };
+                }
+                else // Inglés
+                {
+                    fishingDialogue = new string[] {
+                        "Good job defeating the Void Wall",
+                        "Hmm, why are you looking at me like that?",
+                        "I see you doubting me, right?",
+                        "You have your reasons, but I have mine.",
+                        "I needed someone to achieve my goal.",
+                        "I was the one who incited you to come to the West.",
+                        "And I stopped you from leaving.",
+                        "The Wall of Void was invoked by me too.",
+                        "I had to know that you were the chosen one.",
+                        "And now I'm right, you're the one I was waiting for.",
+                        "Do me a last favor and fish my body.",
+                        "I died a long time ago, in these seas.",
+                        "My death caused the Void to rise.",
+                        "Only you can end it.",
+                    };
+                }
+
+                await dialogueSystem.StartDialogue(fishingDialogue, () => { });
             }
         }
     }
@@ -277,6 +338,143 @@ public class NPCDialogue : MonoBehaviour
                         };
                     }
                     break;
+                case "10": // Traumado
+                    fishingDialogue = new string[] {
+                            "Aléjate de mi!",
+                            "Todo aquí quiere matarme, cómo sé que tu no harás lo mismo!",
+                            "Vine buscando una fortuna y solo encontré un ejercito de esqueletos...",
+                            "No dudaron en dispararme, mi barco acabó destruido.",
+                            "Pude construir esta choza, pero creo que no dudaré mucho aquí...",
+                        };
+                        break;
+                    case "11": // Torre
+                    fishingDialogue = new string[] {
+                            "¡Eh tú!",
+                            "Esta zona es territorio de la Armada Esqueleto.",
+                            "Si entras en esta zona no dudaremos en atacarte.",
+                            "Si eres tan necio de seguir, te acordarás de mis palabras.",
+                            "¡¡¡Nadie es capaz de cruzar estos mares!!!",
+                        };
+                        break;
+                    case "12": // Cazador
+                    fishingDialogue = new string[] {
+                            "Cuidado, escóndete.",
+                            "Aquí hay una bestia terrible.",
+                            "Nunca ví nada tan aterrador, se posó debajo de mi barco y de un mordisco acabó con él.",
+                            "Logré escapar de milagro, pero mira esta zona, no hay barco en condiciones.",
+                            "Ten mucho cuidado, si te acercas demasiado, será tu fin...",
+                        };
+                        break;
+                    case "13": // Void
+                    fishingDialogue = new string[] {
+                            "¡BARCO DETECTADO, BARCO DETECTADO!",
+                            "¡IDENTIFICANDO, IDENTIFICANDO!",
+                            "!!!!!!!",
+                            "IMPOSIBLE, IMPOSIBLE!",
+                            "IMPOSIBLE, IMPOSIBLE!",
+                        };
+                        break;
+                    case "14": // Esqueleto Army
+                    fishingDialogue = new string[] {
+                            "¡Yarrrr, quien osa invadirnos!",
+                            "Soy el lider de la Armada Esqueleto.",
+                            "Dudo que tu barco sea capaz de darme pelea.",
+                            "Al fin y al cabo, somos una armada invencible.",
+                            "¡Aunque muramos, siempre volvemos al combate!",
+                            "Veo que lograste cruzar mis cañoneros, ¡pero eso no es nada!",
+                            "Más te vale alejarte, no quiero negociar con un humano como tu."
+                        };
+                        break;
+                    case "15": // Ultimo bastion
+                    fishingDialogue = new string[] {
+                            "Un humano, ¡es increible!",
+                            "¿Cómo lograste llegar hasta aquí?",
+                            "Nosotros somos el último bastión de este océano.",
+                            "Fuimos humanos como tu, pero el vacío hace efecto en las personas.",
+                            "Quedarse en este océano por mucho tiempo es dejar la humanidad atrás.",
+                            "Entiendo que tu misión es continuar, pero he de avisarte.",
+                            "Ese ser en el barco morado te está llevando a la muerte.",
+                            "Nada bueno habrá si continúas, es lo único que puedo decirte..."
+                        };
+                        break;
+                    case "16": // Locked door
+                        if (!HUDManager.Instance.hasKey4) {
+                            fishingDialogue = new string[] {
+                                "Puerta cerrada.",
+                                "Necesitas una llave."
+                            };
+                        }
+                        else {
+                            fishingDialogue = new string[] {
+                                "Abriendo puerta.",
+                            };
+                        }
+                        break;
+                    case "17": // Corazón void
+                        fishingDialogue = new string[] {
+                            "Obtuviste el corazón del vacío.",
+                        };
+                        break;
+                    case "18": // Barco void 2
+                    if (!voidmessage2)
+                    {
+                        voidmessage2 = true;
+                        fishingDialogue = new string[] {
+                            "Nos volvemos a encontrar...",
+                            "¿Qué te ha parecido esta zona?",
+                            "Terrible, lo sé, yo no puedo dejar de contemplarla...",
+                            "¿Estás preparado para seguir adelante?",
+                            "Estás bastante cerca del final, al menos de la zona que yo conozco.",
+                            "Necesito que hagas una última cosa para que te deje pasar.",
+                            "El Corazón del Vacío, lo quiero, y no estoy en condiciones de ir a por él.",
+                            "Si mal no recuerdo, está cruzando una zona cerrada, la llave debe estar en este area.",
+                            "Buena suerte, vuelve a hablar conmigo cuando lo tengas.",
+                        };
+                    }
+                    else if (!HUDManager.Instance.hasVoidHeart)
+                    {
+                        fishingDialogue = new string[] {
+                            "Estás aquí de nuevo, ¿traes lo que te pedí?",
+                            "Veo que no, te falta algo...",
+                            "Realmente lo necesito para seguir adelante...",
+                            "Vuelve cuando tengas el Corazón del Vacío...",
+                            "Solo así te dejaré seguir adelante...",
+                        };
+                    }
+                    else
+                    {
+                        fishingDialogue = new string[] {
+                            "Estás aquí de nuevo, ¿traes lo que te pedí?",
+                            "Incréible, y es un gran especímen...",
+                            "Los corazónes del vacío se forman con el tiempo y el alma de los humanos.",
+                            "Hacía tiempo que no tenía uno en mi poder...",
+                            "Sigamos avanzando, detrás de ti...",
+                        };
+                    }
+                    break;
+                    case "19": // Hermano perdido
+                        fishingDialogue = new string[] {
+                            "¿Holaaa? ¿Hay alguien ahí?",
+                            "Ugh, alguien me encontró por fin...",
+                            "Pensé que moriría aquí, tiré una botella al agua...",
+                            "Llegaste aquí gracias a que la encontraste, ¿no?",
+                            "Mi hermana debe estar preocupada, normal.",
+                            "Mi barco está destruido por completo, pero lo arreglaré.",
+                            "Gracias por las provisiones."
+                        };
+                        break;
+                    case "20": // Ladrón
+                        fishingDialogue = new string[] {
+                            "¿Ves lo que te dije?",
+                            "Tu me ayudaste, y ahora me toca a mi.",
+                            "Aunque en verdad, no sé como ayudarte...",
+                            "Nunca estuve en este sitio antes, pero he conseguido mucha información.",
+                            "Estuve observando a alguien que estaba en el barco morado.",
+                            "Murmuraba mucho, hablaba de un corazón y de su salvación.",
+                            "No debes fiarte de él, pero bueno, soy un ladrón, capaz no debas hacerme caso.",
+                            "Me quedaré por aquí, esos Esqueletos tienen una gran fortuna."
+                        };
+                        break;
                 default:
                     fishingDialogue = new string[] { "Hola, soy un NPC genérico." };
                     break;
@@ -435,6 +633,143 @@ public class NPCDialogue : MonoBehaviour
                         };
                     }
                     break;
+                    case "10": // Traumado
+                    fishingDialogue = new string[] {
+                            "Go away from me!",
+                            "Everything here wants to kill me, how do I know that you won't do the same?",
+                            "I came looking for a fortune and only found a skeleton army...",
+                            "They didn't hesitate in shooting me, my ship got destroyed.",
+                            "I managed to build this house, but I don't think I'll survive here much...",
+                        };
+                        break;
+                    case "11": // Torre
+                    fishingDialogue = new string[] {
+                            "Hey, you!",
+                            "This area is the territory of the Skeleton Army.",
+                            "If you enter this area, we will attack you.",
+                            "If you're so stupid to follow, you'll be punished.",
+                            "Nobody is able to cross these seas!!!",
+                        };
+                        break;
+                    case "12": // Cazador
+                    fishingDialogue = new string[] {
+                            "Careful, watch out.",
+                            "There's a terrible beast around here.",
+                            "I have never seen anything like this, it went underneath my ship and broke it with one bite.",
+                            "I managed to escape, but look at this area, there's no ship in condition.",
+                            "Be really careful, if you get too close, you'll be dead...",
+                        };
+                        break;
+                    case "13": // Void
+                    fishingDialogue = new string[] {
+                            "SHIP DETECTED, SHIP DETECTED!",
+                            "IDENTIFYING, IDENTIFYING!",
+                            "!!!!!!!",
+                            "IMPOSSIBLE, IMPOSSIBLE!",
+                            "IMPOSSIBLE, IMPOSSIBLE!",
+                        };
+                        break;
+                    case "14": // Esqueleto Army
+                    fishingDialogue = new string[] {
+                            "Yarrrr, who dare invade us!",
+                            "I'm the leader of the Skeleton Army.",
+                            "I doubt your ship is strong enough to defeat us.",
+                            "We are an invincible army.",
+                            "Even after death, we will still fight!",
+                            "I see you managed to cross my cannons, but that's nothing!",
+                            "You better leave, I don't wanna negotiate with a human like you."
+                        };
+                        break;
+                    case "15": // Ultimo bastion
+                    fishingDialogue = new string[] {
+                            "A human, it's incredible!",
+                            "How did you get here?",
+                            "We are the last bastion of this ocean.",
+                            "We were humans like you, but the void changes people.",
+                            "Staying in this ocean for so long is leaving humanity behind.",
+                            "I understand your mission is to continue, but I have to warn you.",
+                            "This being in the purple ship is taking you to death.",
+                            "Nothing good will come if you keep going, it's the only thing I can tell you..."
+                        };
+                        break;
+                    case "16": // Locked door
+                        if (!HUDManager.Instance.hasKey4) {
+                            fishingDialogue = new string[] {
+                                "Locked door.",
+                                "You need a key."
+                            };
+                        }
+                        else {
+                            fishingDialogue = new string[] {
+                                "Opening door.",
+                            };
+                        }
+                        break;
+                    case "17": // Heart void
+                        fishingDialogue = new string[] {
+                                "Obtuviste el corazón del vacío.",
+                            };
+                            break;
+                    case "18": // Barco void 2
+                    if (!voidmessage2)
+                    {
+                        voidmessage2 = true;
+                        fishingDialogue = new string[] {
+                            "We meet again...",
+                            "What's your thoughts about this area?",
+                            "Terrible, I know, I can't stop staring it...",
+                            "Are you ready to continue?",
+                            "You're close to the end, at least to the area I know.",
+                            "I know you to do a last quest for me to pass.",
+                            "The Heart of the Void, I want it, and I'm not in condition to get it.",
+                            "If I'm not mistaken, it's crossing a closed area, the key should be in this area.",
+                            "Good luck, come back when you have it.",
+                        };
+                    }
+                    else if (!HUDManager.Instance.hasVoidHeart)
+                    {
+                        fishingDialogue = new string[] {
+                            "You're back, do you bring what I asked?",
+                            "I see you don't, you're missing something...",
+                            "I really need it to continue...",
+                            "Come back when you have the Heart of the Void...",
+                            "Only then I'll let you continue...",
+                        };
+                    }
+                    else
+                    {
+                        fishingDialogue = new string[] {
+                            "You're back, do you bring what I asked?",
+                            "Astonishing, and it's a great one...",
+                            "The void hearts are formed over time from the soul of the human.",
+                            "It's been a long time since I had one in my power...",
+                            "Let's keep going, after you...",
+                        };
+                    }
+                    break;
+                    case "19": // Hermano perdido
+                        fishingDialogue = new string[] {
+                            "Hello? Is anyone here?",
+                            "Ugh, finally someone found me...",
+                            "I thought I would die here, I threw a bottle at the water...",
+                            "You're here thanks to the bottle right?",
+                            "My sister must be worried, that's normal.",
+                            "My ship is destroyed completely, but I'll fix it.",
+                            "Thanks for the supplies."
+                        };
+                        break;
+                    case "20": // Ladrón
+                        fishingDialogue = new string[] {
+                            "See what I said?",
+                            "You helped me, and now I'm helping you.",
+                            "But actually, I don't know how to help you...",
+                            "I have never been in this place before, but I managed to gather a lot of information.",
+                            "I have been watching someone who was in the purple ship.",
+                            "He was mumbling a lot, talking about a heart and its salvation.",
+                            "You shouldn't trust him, but well, I'm a thief, you shouldn't trust me either.",
+                            "I will stay here, those skeletons have a great fortune."
+                        };
+                        break;
                 default:
                     fishingDialogue = new string[] { "Hi, I'm a generic NPC." };
                     break;
@@ -456,7 +791,23 @@ public class NPCDialogue : MonoBehaviour
         {
             StartCoroutine(TransitionToNextLevel());
         }
-
+        if (npcID == "16" && HUDManager.Instance.hasKey4 && !isDialogueRunning) {
+            Destroy(gameObject);
+        }
+        if (npcID == "17" && !isDialogueRunning) {
+            HUDManager.Instance.CollectVoidHeart();
+            Destroy(gameObject);
+        }
+        if (npcID == "18" && HUDManager.Instance.hasVoidHeart && voidmessage2 && !isDialogueRunning)
+        {
+            StartCoroutine(TransitionToNextLevel2());
+        }
+        if (npcID == "19" && !isDialogueRunning) {
+            HUDManager.Instance.SetBrotherQuestComplete();
+        }
+        if (npcID == "20" && !isDialogueRunning) {
+            HUDManager.Instance.SetTheftQuestComplete();
+        }
     }
 
     private IEnumerator TransitionToNextLevel()
@@ -464,5 +815,12 @@ public class NPCDialogue : MonoBehaviour
         yield return new WaitForSeconds(2f); // Tiempo para la animación
         SceneManager.LoadScene("BoneyWaters"); // Cargar la siguiente escena
         Debug.Log("Transition to BoneyWaters");
+    }
+
+    private IEnumerator TransitionToNextLevel2()
+    {
+        yield return new WaitForSeconds(2f); // Tiempo para la animación
+        SceneManager.LoadScene("Void"); // Cargar la siguiente escena
+        Debug.Log("Transition to Void");
     }
 }

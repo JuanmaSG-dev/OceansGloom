@@ -28524,6 +28524,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fishingCanvas: {fileID: 779549890}
   hook: {fileID: 455930073}
+  hookImage: {fileID: 455930074}
+  hookDefaultImage: {fileID: 21300000, guid: c3229a290fd34be46a14319e50d2698d, type: 3}
+  hookUpgradeImage: {fileID: 21300000, guid: 22f7ea854c7c49743a765d0487ae278e, type: 3}
   greenZone: {fileID: 44463111}
   redBar: {fileID: 1302869461}
   puntosText: {fileID: 966806648}
@@ -28536,6 +28539,7 @@ MonoBehaviour:
   shipController: {fileID: 1799290945}
   fishPool: {fileID: 1541444358}
   caughtFishImage: {fileID: 1984959469}
+  Upgraded: 0
 --- !u!4 &1855235195
 Transform:
   m_ObjectHideFlags: 0

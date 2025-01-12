@@ -11,6 +11,7 @@ public class PauseMenu : MonoBehaviour
     public TMP_Text pausarText, continueText, optionsPauseText, salirMenuText;
     int currentLanguage;
 
+/*
     private void Awake()
     {
         if (Instance == null)
@@ -23,17 +24,27 @@ public class PauseMenu : MonoBehaviour
             Destroy(gameObject);
         }
     }
+*/
+    private void onSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        pausePanel = GameObject.Find("PausePanel").GetComponent<GameObject>();
+        pausarText = GameObject.Find("PauseText").GetComponent<TMP_Text>();
+        continueText = GameObject.Find("ContinueText").GetComponent<TMP_Text>();
+        optionsPauseText = GameObject.Find("OptionsPauseText").GetComponent<TMP_Text>();
+        salirMenuText = GameObject.Find("SalirMenuText").GetComponent<TMP_Text>();
+        ResumeGame();
+    }
 
     private void Start()
-    {
-        currentLanguage = PlayerPrefs.GetInt("Language", 0); // 0 = Español, 1 = Inglés
+    { 
+        currentLanguage = PlayerPrefs.GetInt("Language", 0); // 0 = Espaï¿½ol, 1 = Inglï¿½s
         if (currentLanguage == 0)
         {
             UpdatePauseText("Juego pausado");
             UpdateContinueText("Continuar");
             UpdateOptionText("Opciones");
-            UpdateSalirText("Salir al menú");
-        } // Español 
+            UpdateSalirText("Salir al menÃº");
+        } // EspaÃ±ol 
 
         else
         {
