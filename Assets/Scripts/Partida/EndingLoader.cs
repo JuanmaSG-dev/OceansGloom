@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Threading.Tasks;
+using TMPro;
+using UnityEngine.SceneManagement;
 
 public class EndingLoader : MonoBehaviour
 {
@@ -11,6 +13,8 @@ public class EndingLoader : MonoBehaviour
     public GameObject fishZone;
     public GameObject panel;
     public GameObject Creditos;
+    public TMP_Text creditsText;
+    public TMP_Text artText;
     public bool isFinished = false;
     private string[] fishingDialogue;
     private bool isDialogueRunning = false;
@@ -20,14 +24,13 @@ public class EndingLoader : MonoBehaviour
     {
         panel.gameObject.SetActive(false);
         currentLanguage = PlayerPrefs.GetInt("Language", 0); // 0 = Español, 1 = Inglés
+        Finish();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (isFinished) return;
-        Finish();
-
+    
     }
 
     public async void Finish() {
@@ -56,14 +59,14 @@ public class EndingLoader : MonoBehaviour
                 };
             }
             // Toca juzgar los 2 finales, FINAL BUENO (OBTUVO TODO) Y FINAL MALO (FALLÓ ALGUNA MISIÓN)
-            if (HUDManager.Instance.brotherQuestComplete && HUDManager.Instance.TheftQuestComplete && HUDManager.Instance.isKey1Used && HUDManager.Instance.isKey2Used && HUDManager.Instance.isKey3Used) {
+            if (HUDManager.Instance.brotherQuestComplete && HUDManager.Instance.TheftQuestComplete) {
                 if (currentLanguage == 0) // Español
                 {
                     fishingDialogue = new string[]
                     {
                         "Ya veo...",
                         "Conseguiste todas las misiones que puse en tu camino.",
-                        "Conseguiste los 3 cofres y ayudaste al hermano perdido.",
+                        "Ayudaste al hermano perdido.",
                         "Te fiaste del ladrón y te dio la llave a la ciudad.",
                         "¡Felicidades!",
                         "Salvaré tu alma, ahora, con amnesia, despertarás en tu casa del faro.",
@@ -77,7 +80,7 @@ public class EndingLoader : MonoBehaviour
                     {
                         "I see...",
                         "You managed to complete all the missions I put on your path.",
-                        "You got the 3 chests and helped the lost brother.",
+                        "You helped the lost brother.",
                         "You trusted the thief and he gave you the key to the city.",
                         "Congratulations!",
                         "I will save your soul, now, with amnesia, you'll wake up in your lighthouse.",
@@ -85,7 +88,7 @@ public class EndingLoader : MonoBehaviour
                         "GOOD ENDING."
                     };
                 }
-            } else {
+            } else if (!HUDManager.Instance.brotherQuestComplete || !HUDManager.Instance.TheftQuestComplete) {
                 if (currentLanguage == 0) // Español
                 {
                     fishingDialogue = new string[]
@@ -119,6 +122,16 @@ public class EndingLoader : MonoBehaviour
             Debug.Log("Final...");
             if (!isDialogueRunning) {
                 Creditos.gameObject.SetActive(true);
+                if (currentLanguage == 0) // Español
+                {
+                    creditsText.text = "Créditos";
+                    artText.text = "Tilemaps: Juan Manuel Salinas\nSprites:\n   Peces: Juan Manuel Salinas\n    Cofres: NullTale\n  Llaves: NullTale\n  Criaturas: Juan Manuel Salinas\nMúsica: sunoAI\nSonidos: freesounds.org";
+                }
+                else // Inglés
+                {
+                    creditsText.text = "Credits";
+                    artText.text = "Tilemaps: Juan Manuel Salinas\nSprites:\n   Fishes: Juan Manuel Salinas\n    Chests: NullTale\n  Keys: NullTale\n  Criatures: Juan Manuel Salinas\nMusic: sunoAI\nSounds: freesounds.org";
+                }
             }
     }
 
@@ -129,4 +142,20 @@ public class EndingLoader : MonoBehaviour
             await Task.Yield();
         }
     }
+
+    public void VolverButton()
+    {
+        SceneManager.LoadScene("Menu");
+    }
 }
+
+/*
+Tilemaps: Juan Manuel Salinas
+Sprites:
+	Peces: Juan Manuel Salinas
+	Cofres: NullTale
+	Llaves: NullTale
+	Criaturas: Juan Manuel Salinas
+Música: sunoAI
+Sonidos: freesounds.org
+*/

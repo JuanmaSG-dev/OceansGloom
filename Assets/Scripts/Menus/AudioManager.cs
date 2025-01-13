@@ -12,6 +12,7 @@ public class AudioManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            musicSource = Camera.main.GetComponent<AudioSource>();
         }
         else
         {

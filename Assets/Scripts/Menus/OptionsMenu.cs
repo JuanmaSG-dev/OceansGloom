@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class OptionsMenu : MonoBehaviour
 {
@@ -67,6 +68,7 @@ public class OptionsMenu : MonoBehaviour
     {
         if (PlayerPrefs.HasKey("Language")) 
         {
+            
             int savedLanguage = PlayerPrefs.GetInt("Language"); 
             languageDropdown.value = savedLanguage; // Sincronizar Dropdown
             languageDropdown.RefreshShownValue();
@@ -82,6 +84,7 @@ public class OptionsMenu : MonoBehaviour
     public void ChangeTextLanguage(int language)
     {
         TMP_Text[] allTexts = FindObjectsOfType<TMP_Text>();
+        string sceneName = SceneManager.GetActiveScene().name;
 
         foreach (TMP_Text text in allTexts)
         {
@@ -111,11 +114,6 @@ public class OptionsMenu : MonoBehaviour
                     case "SonidoText":
                         text.text = "Volumen Sonido";
                         break;
-                    case "LocationLv1":
-                        text.text = "El Oeste";
-                        if (HUDManager.Instance != null)
-                        HUDManager.Instance.UpdateLocationName("El Oeste");
-                        break;
                     case "PauseText":
                         text.text = "Juego pausado";
                         if (pauseMenu != null)
@@ -135,6 +133,31 @@ public class OptionsMenu : MonoBehaviour
                         text.text = "Salir al menú";
                         if (pauseMenu != null)
                             pauseMenu.UpdateSalirText("Salir al menú");
+                        break;
+                    case "CreditsText":
+                        text.text = "Creditos";
+                        break;
+                    case "VolverMenuText":
+                        text.text = "Fin";
+                        break;
+                    case "LocationLv1":
+                        Debug.Log(text.name);
+                        switch (sceneName)
+                        {
+                            case "TheWest": // Nivel 1
+                                text.text = "El Oeste";
+                                Debug.Log("The West");
+                                break;
+
+                            case "BoneyWaters": // Nivel 2
+                                text.text = "Huesocéano";
+                                Debug.Log("Boney Waters");
+                                break;
+                            case "Void": // Nivel 2
+                                text.text = "El Vacío";
+                                Debug.Log("The Void");
+                                break;
+                        }
                         break;
                 }
             }
@@ -163,11 +186,6 @@ public class OptionsMenu : MonoBehaviour
                     case "SonidoText":
                         text.text = "Sound Volume";
                         break;
-                    case "LocationLv1":
-                        text.text = "The West";
-                        if (HUDManager.Instance != null)
-                        HUDManager.Instance.UpdateLocationName("The West");
-                        break;
                     case "PauseText":
                         text.text = "Game Paused";
                         if (pauseMenu != null)
@@ -187,6 +205,29 @@ public class OptionsMenu : MonoBehaviour
                         text.text = "Back to main menu";
                         if (pauseMenu != null)
                             pauseMenu.UpdateSalirText("Back to main menu");
+                        break;
+                    case "CreditsText":
+                        text.text = "Credits";
+                        break;
+                    case "VolverMenuText":
+                        text.text = "The end";
+                        break;
+                    case "LocationLv1":
+                        switch (sceneName)
+                        {
+                            case "TheWest": // Nivel 1
+                                text.text = "The West";
+                                Debug.Log("The West2");
+                                break;
+                            case "BoneyWaters": // Nivel 2
+                                text.text = "Boney Waters";
+                                Debug.Log("Boney Waters2");
+                                break;
+                            case "Void": // Nivel 2
+                                text.text = "The Void";
+                                Debug.Log("The Void2");
+                                break;
+                        }
                         break;
                 }
             }

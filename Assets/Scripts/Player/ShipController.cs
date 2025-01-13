@@ -51,7 +51,7 @@ public class ShipController : MonoBehaviour
             fishingBubble.transform.rotation = fixedRotationBubble1;
         }
         if (HUDManager.Instance != null && HUDManager.Instance.isKey1Used)
-            maxSpeed = 15f;
+            maxSpeed = 12f;
         else
             maxSpeed = 10f;
         /*if (Eye != null && Eye.isActiveNow)

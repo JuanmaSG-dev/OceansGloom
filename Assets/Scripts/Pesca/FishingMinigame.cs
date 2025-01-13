@@ -17,7 +17,7 @@ public class FishingMinigame : MonoBehaviour
 
     //public float hookSpeed = 200f;           // Velocidad del anzuelo
     public int targetPoints = 10;            // Puntos necesarios para ganar
-    public int lives = 3;                    // Vidas maximas
+    public int lives;                    // Vidas maximas
 
     private int currentPoints = 0;           // Puntos actuales
     public bool isFishingActive = false;    // Estado del minijuego
@@ -39,6 +39,9 @@ public class FishingMinigame : MonoBehaviour
 
     int currentLanguage;
     public bool Upgraded = false;
+    public AudioClip successSound;
+    public AudioClip failSound;
+
 
     private void Start()
     { 
@@ -50,6 +53,16 @@ public class FishingMinigame : MonoBehaviour
         shipController.SetControlEnabled(false);
         currentLanguage = PlayerPrefs.GetInt("Language", 0); // 0 = Español, 1 = Inglés
         UpdateUI();
+    }
+
+
+    public void PlayFishingSound(bool success)
+    {
+        AudioSource audioSource = Camera.main.GetComponent<AudioSource>();
+        if (success)
+            audioSource.PlayOneShot(successSound);
+        else
+            audioSource.PlayOneShot(failSound);
     }
 
     public void StartFishing(ZonaPesca fishingZone)
@@ -69,7 +82,7 @@ public class FishingMinigame : MonoBehaviour
 
         // Inicializa la posicion y los puntos del minijuego
         currentPoints = 0;
-
+        lives = 3;
         UpdateUI();
 
         // Inicializa el movimiento aleatorio de la zona verde
@@ -146,6 +159,7 @@ public class FishingMinigame : MonoBehaviour
     {
         if (RectTransformUtility.RectangleContainsScreenPoint(greenZone, hook.position))
         {
+            PlayFishingSound(true);
             if (Upgraded)
                 currentPoints += 2;
             else 
@@ -165,6 +179,7 @@ public class FishingMinigame : MonoBehaviour
         }
         else
         {
+            PlayFishingSound(false);
             lives--; // Pierde una vida si est� fuera de la zona verde
             if (currentLanguage == 0) // Español
             {

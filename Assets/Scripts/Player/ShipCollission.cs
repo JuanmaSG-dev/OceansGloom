@@ -10,10 +10,13 @@ public class ShipCollision : MonoBehaviour
     public ShipController shipController;
     public FishingMinigame fishingMinigame;
     public WallofVoid wall;
+    public AudioClip explosionSound;
+    private AudioSource audioSource;
 
     private void Start()
     {
         gameObject.SetActive(true);
+        audioSource = Camera.main.GetComponent<AudioSource>();
         rb = GetComponent<Rigidbody2D>();
         shipController = GetComponent<ShipController>();
     }
@@ -36,6 +39,7 @@ public class ShipCollision : MonoBehaviour
         if (explosionEffectPrefab != null)
         {
             Instantiate(explosionEffectPrefab, transform.position, Quaternion.identity);
+            PlayExplosion();
         }
         if (HUDManager.Instance != null)
         {
@@ -60,5 +64,10 @@ public class ShipCollision : MonoBehaviour
 
         // Reactivar el barco
         gameObject.SetActive(true);
+    }
+
+    public void PlayExplosion()
+    {
+        audioSource.PlayOneShot(explosionSound);
     }
 }

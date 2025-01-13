@@ -475,6 +475,24 @@ public class NPCDialogue : MonoBehaviour
                             "Me quedaré por aquí, esos Esqueletos tienen una gran fortuna."
                         };
                         break;
+                    case "21":
+                        fishingDialogue = new string[] {
+                            "Buen trabajo superando al Muro del Vacío",
+                            "Hmm, ¿por qué me miras así?",
+                            "Veo que sospechas de mi, ¿verdad?",
+                            "Tienes tus motivos, pero yo tengo los míos.",
+                            "Necesitaba a alguien para lograr este objetivo.",
+                            "Yo fui quien te incitó a venir al Oeste.",
+                            "Y yo te impedía huir.",
+                            "El Muro del Vacío lo invoqué yo también.",
+                            "Necesitaba saber que eras el elegido.",
+                            "Y ahora estoy en lo cierto, eres al que estaba esperando.",
+                            "Hazme un último favor, y pesca mi cuerpo.",
+                            "Yo fallecí hace mucho tiempo, en estos mares.",
+                            "Mi muerte provocó que el Vacío naciese.",
+                            "Solo tú puedes acabar con él.",
+                        };
+                        break;
                 default:
                     fishingDialogue = new string[] { "Hola, soy un NPC genérico." };
                     break;
@@ -768,6 +786,24 @@ public class NPCDialogue : MonoBehaviour
                             "He was mumbling a lot, talking about a heart and its salvation.",
                             "You shouldn't trust him, but well, I'm a thief, you shouldn't trust me either.",
                             "I will stay here, those skeletons have a great fortune."
+                        };
+                        break;
+                    case "21":
+                        fishingDialogue = new string[] {
+                            "Good job defeating the Void Wall",
+                            "Hmm, why are you looking at me like that?",
+                            "I see you doubting me, right?",
+                            "You have your reasons, but I have mine.",
+                            "I needed someone to achieve my goal.",
+                            "I was the one who incited you to come to the West.",
+                            "And I stopped you from leaving.",
+                            "The Wall of Void was invoked by me too.",
+                            "I had to know that you were the chosen one.",
+                            "And now I'm right, you're the one I was waiting for.",
+                            "Do me a last favor and fish my body.",
+                            "I died a long time ago, in these seas.",
+                            "My death caused the Void to rise.",
+                            "Only you can end it.",
                         };
                         break;
                 default:

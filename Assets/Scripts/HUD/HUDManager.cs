@@ -119,10 +119,16 @@ public class HUDManager : MonoBehaviour
                 else 
                 UpdateLocationName("Boney Waters");
                 break;
+            case "Void":
+                if (currentLanguage == 0) // Español
+                UpdateLocationName("El Vacío");
+                else 
+                UpdateLocationName("The Void");
+                break;
         }
     }
 
-    private void UpdateLocationAndHUD(string sceneName)
+    public void UpdateLocationAndHUD(string sceneName)
     {
         // Ocultar todos los elementos primero
         HideAllHUDItems();
@@ -142,6 +148,9 @@ public class HUDManager : MonoBehaviour
                 key4Image.gameObject.SetActive(true);
                 voidHeartImage.gameObject.SetActive(true);
                 break;
+            case "Void": // Nivel 2
+                LocationNameText.text = (currentLanguage == 0) ? "El Vacío" : "The Void";
+                break;
         }
     }
 
@@ -160,6 +169,10 @@ public class HUDManager : MonoBehaviour
         float playerSpeed = playerRigidbody.velocity.magnitude;
         hudCanvas.enabled = playerSpeed <= maxSpeedForHUD;
         UpdateHUD();
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            AddFish(10); // Añadir 10 peces
+        }
     }
 
     public void UpdateHUD()
@@ -276,5 +289,12 @@ public class HUDManager : MonoBehaviour
     public void SetTheftQuestComplete()
     {
         TheftQuestComplete = true;
+    }
+
+    public void AddFish(int amount)
+    {
+        fishCount += amount;
+        UpdateHUD(); // Actualizar el HUD después del cambio
+        Debug.Log($"{amount} peces añadidos. Total ahora: {fishCount}");
     }
 }

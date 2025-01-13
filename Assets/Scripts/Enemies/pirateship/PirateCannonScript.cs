@@ -8,6 +8,8 @@ public class PirateCannonScript : MonoBehaviour
     public float fireRate = 3f;
     private float nextFireTime;
 
+
+
     private void Update()
     {
         if (Time.time >= nextFireTime)
